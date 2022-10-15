@@ -11,16 +11,35 @@
   <body>
     <main>
       <h1>Etch-a-Sketch</h1>
-      <p>
-        Number of columns:
-        <input
-          type="text"
-          name="number-of-columns"
-          id="number-of-columns"
-          placeholder="Number of Columns"
-        />
-        <button id="reset-canvas-btn">Reset Canvas</button>
-      </p>
+      <section id="reset-canvas">
+        <p>
+          Number of columns:
+          <input
+            type="text"
+            name="number-of-columns"
+            id="number-of-columns"
+            placeholder="Number of Columns"
+          />
+          <button id="reset-canvas-btn">Reset Canvas</button>
+        </p>
+      </section>
+      <section id="mode-selection">
+        <p>
+          <label for="random-color-mode"
+            >Random Colors
+            <input
+              type="checkbox"
+              name="random-color-mode"
+              id="random-color-mode"
+          /></label>
+          <label for="progressive-darkening-mode">Progressive Darkening</label>
+          <input
+            type="checkbox"
+            name="progressive-darkening-mode"
+            id="progressive-darkening-mode"
+          />
+        </p>
+      </section>
       <section id="canvas" class="grid"></section>
     </main>
   </body>

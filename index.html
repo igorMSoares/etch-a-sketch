@@ -25,6 +25,7 @@
             type="text"
             name="number-of-columns"
             id="number-of-columns"
+            class="columns-input"
             placeholder="..."
             maxlength="3"
             pattern="\d{1,3}"
@@ -38,6 +39,7 @@
           <label for="erase-mode"
             >Erase
             <input type="checkbox" name="erase-mode" id="erase-mode" />
+            <span class="color-mode-cb"></span>
           </label>
           <label for="random-color-mode"
             >Random Colors
@@ -45,13 +47,17 @@
               type="checkbox"
               name="random-color-mode"
               id="random-color-mode"
-          /></label>
-          <label for="progressive-darkening-mode">Progressive Darkening</label>
-          <input
-            type="checkbox"
-            name="progressive-darkening-mode"
-            id="progressive-darkening-mode"
-          />
+            />
+            <span class="color-mode-cb"></span>
+          </label>
+          <label for="progressive-darkening-mode"
+            >Progressive Darkening
+            <input
+              type="checkbox"
+              name="progressive-darkening-mode"
+              id="progressive-darkening-mode" />
+            <span class="color-mode-cb"></span
+          ></label>
         </p>
       </section>
       <section id="canvas" class="grid"></section>

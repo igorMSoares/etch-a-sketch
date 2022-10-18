@@ -15,8 +15,19 @@
     <title>Etch-a-Sketch Project</title>
   </head>
   <body>
-    <main>
+    <header>
       <h1>Etch-a-Sketch</h1>
+      <article>
+        <p>If you're into pixel art or perhaps just love coloring things around, come and let your artistic self flow in this pixelated canvas!</p>
+        <p class="divider"></p>
+        <section id="instructions">
+        <h3>Instructions</h3>
+        <p>Choose a color from the palette and experiment with the different color modes. </p><p>
+        If you want to change the size of the pixels, a greater number of columns will generate smaller pixels and vice versa.</p>
+        <p class="divider"></p></section>
+      </article>
+    </header>
+    <main>
       <section id="msg-area" class="transition"></section>
       <section id="reset-canvas" class="transition">
         <p>
@@ -74,5 +85,16 @@
       </section>
       <section id="canvas" class="grid"></section>
     </main>
+    <footer>
+      <p>Created by: Igor Soares
+      <a target="_blank" href="https://github.com/iguhsoares"
+        ><img
+          src="./public/img/github-icon.png"
+          alt="GitHub icon"
+          title="Check my other projects on GitHub!"
+          class="github-icon"
+      /></a</p>
+      <p class="divider"></p>
+    </footer>
   </body>
 </html>

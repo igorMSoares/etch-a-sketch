@@ -2,6 +2,8 @@
 
 I developed this project to practice front end skills and to deepen my knowledge of CSS and Javascript, as a part of [The Odin Project](www.theodinproject.com)'s Foundations Course. 🤓
 
+Try it out here 👉🏾 [Etch-a-Sketch](https://iguhsoares.github.io/etch-a-sketch/) !
+
 ## Overview
 
 A web version of the awesome classical retro drawing toy (or tool? 🤔)
@@ -47,3 +49,7 @@ Hey, thanks a lot if you're enjoying using this etch-a-sketch web app! 🧡
 If you found some issues or have any suggestions on how to improve this, feel free to open an issue here on the repository or to colaborate through your pull requests.
 
 All feedbacks are mostly appreciated! 😊
+
+## License
+
+[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)

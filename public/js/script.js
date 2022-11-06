@@ -1,3 +1,5 @@
+import jsCssAnimations from './js-css-animations/js-css-animations.js';
+
 const canvas = document.getElementById('canvas');
 const root = document.querySelector(':root');
 const brush = {
@@ -37,30 +39,34 @@ const isMobile = () => {
   );
 };
 
-const clearSlideTransitions = element => {
-  element.classList.remove('slideUp');
-  element.classList.remove('slideDown');
+const setVisibility = (element, opts = {}) => {
+  const el =
+    element instanceof HTMLElement
+      ? element
+      : typeof element === 'string'
+      ? document.getElementById(element)
+      : null;
+  if (!el)
+    throw new ReferenceError(
+      `Invalid element: '${element}' Expected HTMLElement or a valid element id`
+    );
+  const { motion = 'slideUp' } = opts;
+
+  return {
+    show: () => jsCssAnimations.show[motion](el, opts),
+    hide: () => jsCssAnimations.hide[motion](el, opts),
+  };
 };
 
-const slideDown = (elementId, node = null) => {
-  const element = node ? node : document.getElementById(elementId);
-
-  clearSlideTransitions(element);
-  element.classList.add('slideDown');
+const hideColorPicker = () => {
+  setVisibility('color-picker', {
+    duration: '500ms',
+    timingFunction: 'ease',
+    resetAfter: false,
+  }).hide();
 };
 
-const slideUp = (elementId, node = null) => {
-  const element = node ? node : document.getElementById(elementId);
-
-  clearSlideTransitions(element);
-  element.classList.add('slideUp');
-};
-
-const show = elementId =>
-  document.getElementById(elementId).classList.remove('hidden');
-
-const hide = elementId =>
-  document.getElementById(elementId).classList.add('hidden');
+const showColorPicker = () => setVisibility('color-picker').show();
 
 const displayMessage = (message, duration = 2000) => {
   const msg = document.createElement('p');
@@ -68,11 +74,11 @@ const displayMessage = (message, duration = 2000) => {
   document.getElementById('msg-area').style.setProperty('max-height', '5rem');
   setTimeout(() => {
     document.getElementById('msg-area').appendChild(msg);
-    slideDown('msg-area');
+    setVisibility('msg-area').show();
   }, 400);
 
   setTimeout(() => {
-    slideUp('msg-area');
+    setVisibility('msg-area').hide();
     setTimeout(
       () =>
         document
@@ -192,7 +198,7 @@ const resetColorPicker = () => {
 
 const renderColorPicker = () => {
   const colorPicker = document.getElementById('color-picker');
-  colorPicker.classList.add('slideDown');
+  showColorPicker();
   let span;
   let hValue;
   let lValue = 46;
@@ -262,72 +268,6 @@ const toggleState = (elementId, setStateHandler) => {
   };
 
   setStateHandler(toggle[getState(elementId)]);
-};
-
-const toggleInstructions = () =>
-  toggleState('instructions', setInstructionsState);
-
-const rotateInstructionsIcon = direction => {
-  const toggleIcon = document.querySelector('.toggle-instructions');
-  if (direction === 'up') {
-    toggleIcon.classList.remove('rotate-down');
-    toggleIcon.classList.add('rotate-up');
-  } else if (direction === 'down') {
-    toggleIcon.classList.remove('rotate-up');
-    toggleIcon.classList.add('rotate-down');
-  }
-};
-
-const toggleInstructionsHeader = (state, headerId = 'instructions-h') => {
-  const header = document.getElementById(headerId);
-  if (state === 'visible') {
-    header.classList.add('slideDown');
-    header.classList.remove('hidden', 'slideUp');
-  } else if (state === 'hidden') {
-    header.classList.add('slideUp');
-    setTimeout(() => {
-      header.classList.add('hidden');
-    }, 200);
-  }
-};
-
-const setInstructionsState = state => {
-  setState(
-    'instructions',
-    state,
-    instructionsArea => {
-      document.querySelectorAll('#instructions-content > *').forEach(el => {
-        slideDown(null, el);
-      });
-
-      show('instructions-content');
-      toggleInstructionsHeader('visible');
-      rotateInstructionsIcon('up');
-
-      instructionsArea.classList.remove('no-margin-top', 'no-padding');
-      document
-        .querySelector('#instructions h3')
-        .classList.remove('no-margin-top');
-    },
-    instructionsArea => {
-      document.querySelectorAll('#instructions-content > *').forEach(el => {
-        slideUp(null, el);
-      });
-
-      setTimeout(() => {
-        hide('instructions-content');
-        toggleInstructionsHeader('hidden');
-        rotateInstructionsIcon('down');
-
-        setTimeout(() => {
-          instructionsArea.classList.add('no-margin-top', 'no-padding');
-          document
-            .querySelector('#instructions h3')
-            .classList.add('no-margin-top');
-        }, 200);
-      }, 350);
-    }
-  );
 };
 
 const setGridState = state => {
@@ -494,7 +434,7 @@ const resetCanvas = () => {
     document.querySelectorAll('.color-mode-selector').forEach(box => {
       box.checked = false;
       box.disabled = false;
-      slideDown('color-picker');
+      showColorPicker();
     });
 
     canvas.style.removeProperty('height');
@@ -539,8 +479,8 @@ const initColorModeHandler = mode => {
         });
 
         mode === 'random-color-mode' || mode === 'erase-mode'
-          ? slideUp('color-picker')
-          : slideDown('color-picker');
+          ? hideColorPicker()
+          : showColorPicker();
 
         if (mode === 'erase-mode') brush.mode = 'eraser';
 
@@ -553,7 +493,7 @@ const initColorModeHandler = mode => {
         });
 
         if (mode === 'random-color-mode' || mode === 'erase-mode')
-          slideDown('color-picker');
+          showColorPicker();
         if (mode === 'erase-mode') brush.mode = 'brush';
 
         eventHandler = handler.default;
@@ -611,8 +551,28 @@ const removeOutlineOnClick = element => {
 const initToggleInstructionsHandler = () => {
   const toggler = document.querySelector('.toggle-instructions');
   removeOutlineOnClick(toggler);
-  toggler.onclick = toggleInstructions;
   initKeydownEvent(toggler);
+
+  jsCssAnimations.animate('collapse', {
+    toggleBtn: '.toggle-instructions',
+    duration: '1000ms',
+    start: () => {
+      const instructArea = document.getElementById('instructions');
+      const rotateClass = [...toggler.classList].find(c => c.match(/rotate/));
+      if (!rotateClass || rotateClass === 'rotate-up') {
+        toggler.classList.add('rotate-down');
+        setTimeout(() => {
+          instructArea.classList.add('instructions-area__collapsed');
+        }, 500);
+      } else {
+        toggler.classList.add('rotate-up');
+        setTimeout(() => {
+          instructArea.classList.remove('instructions-area__collapsed');
+        }, 500);
+      }
+      if (rotateClass) toggler.classList.remove(rotateClass);
+    },
+  });
 };
 
 const initDownloadHandler = () => {
@@ -634,7 +594,7 @@ const initDownloadHandler = () => {
 
   const boxContent = document.querySelector('#download p').innerText;
   document.getElementById('download-icon').addEventListener('click', _ => {
-    hide('download-icon');
+    setVisibility('download-icon', { duration: '400ms' }).hide();
     document
       .querySelector('#download p')
       .style.setProperty('line-height', 'normal');
@@ -679,7 +639,7 @@ const initDownloadHandler = () => {
           .getElementById('canvas')
           .getAttribute('corners')
           .split(',');
-        for (id of corners) {
+        for (let id of corners) {
           const element = doc.getElementById(id);
           element.classList.remove(findCornerClass(element));
         }
@@ -692,7 +652,9 @@ const initDownloadHandler = () => {
 
       root.style.removeProperty('cursor');
       document.querySelector('#download p').style.removeProperty('line-height');
-      show('download-icon');
+      setTimeout(() => {
+        setVisibility('download-icon').show();
+      }, 400);
       document.querySelector('#download p').innerText = boxContent;
     });
   });
@@ -701,7 +663,6 @@ const initDownloadHandler = () => {
 };
 
 const start = squaresPerRow => {
-  setInstructionsState('visible');
   initToggleInstructionsHandler();
   initDownloadHandler();
 

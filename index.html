@@ -10,9 +10,13 @@
       href="https://fonts.googleapis.com/css2?family=Fuzzy+Bubbles:wght@400;700&display=swap"
       rel="stylesheet"
     />
+    <link
+      rel="stylesheet"
+      href="./public/js/js-css-animations/js-animations.css"
+    />
     <link rel="stylesheet" href="./public/css/style.css" />
     <script src="./public/js/html2canvas.min.js"></script>
-    <script defer src="./public/js/script.js"></script>
+    <script src="./public/js/script.js" type="module"></script>
     <title>Etch-a-Sketch Project</title>
   </head>
   <body>
@@ -23,18 +27,19 @@
         come and let your artistic self flow in this pixelated canvas!
       </p>
       <p class="divider"></p>
-      <section id="instructions" class="box">
-        <h3>
-          <span id="instructions-h">Instructions </span>
+      <section id="instructions" class="instructions-area box">
+        <h3 class="instructions__header">
+          <span id="instructions-h" class="toggable">Instructions </span>
           <img
             class="toggle-instructions"
             title="Click to hide/show the instructions"
             src="./public/img/arrows-up.png"
             alt="Toggle instructions"
             tabindex="0"
+            toggle-selector=".toggable"
           />
         </h3>
-        <article id="instructions-content">
+        <article id="instructions-content" class="toggable">
           <p>
             Choose a color from the palette and
             <b>click the canvas</b> to start painting. Click inside the canvas
@@ -89,7 +94,9 @@
           <button id="reset-canvas-btn">Reset Canvas</button>
         </p>
       </section>
-      <section id="color-picker" class="transition"></section>
+      <div>
+        <section id="color-picker" class="color-picker transition"></section>
+      </div>
       <section id="mode-selection" class="transition">
         <p>
           <label for="erase-mode"

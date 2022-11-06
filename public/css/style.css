@@ -13,38 +13,6 @@
   --slide-duration: 800ms;
 }
 
-@keyframes slideDown {
-  from {
-    opacity: 0;
-    transform: translateY(-100%);
-  }
-  to {
-    opacity: 1;
-    transform: translateY(0);
-  }
-}
-
-.slideDown {
-  animation: var(--slide-duration) slideDown ease;
-  animation-fill-mode: forwards;
-}
-
-@keyframes slideUp {
-  from {
-    opacity: 1;
-    transform: translateY(0);
-  }
-  to {
-    opacity: 0;
-    transform: translateY(-100%);
-  }
-}
-
-.slideUp {
-  animation: var(--slide-duration) slideUp ease;
-  animation-fill-mode: forwards;
-}
-
 #msg-area {
   width: clamp(300px, 100%, 500px);
   margin: 0 auto;
@@ -118,13 +86,14 @@ header {
   background-color: hsla(39, 42%, 76%, 0.57);
 }
 
-#instructions {
+.instructions-area {
   position: relative;
+  margin: 0 auto;
   margin-top: 1.25rem;
   transition: 500ms margin ease;
 }
 
-#instructions h3 {
+.instructions__header {
   margin-top: 0.5em;
 }
 
@@ -141,8 +110,6 @@ header {
 .toggle-instructions {
   width: 0.5em;
   height: 0.5em;
-  cursor: pointer;
-  transition: 200ms transform ease;
 }
 
 #download {
@@ -391,7 +358,7 @@ button:focus,
   background-color: hsl(var(--h-value), var(--s-value), var(--l-value));
 }
 
-#color-picker {
+.color-picker {
   display: flex;
   flex-wrap: wrap;
   justify-content: center;
@@ -441,15 +408,13 @@ button:focus,
   display: none;
 }
 
-.no-margin-top {
-  margin-top: 0 !important;
-}
-
-.no-padding {
+.instructions-area__collapsed {
+  margin-top: 0.75em;
   padding: 0;
+  width: 50%;
 }
 
-.no-padding h3 {
+.instructions-area__collapsed .instructions__header {
   margin: 0;
 }
 

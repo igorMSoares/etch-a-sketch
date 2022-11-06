@@ -1,0 +1,212 @@
+@keyframes js-anim--collapse {
+  from {
+    opacity: 1;
+    transform: scaleY(1);
+  }
+  to {
+    opacity: 0;
+    transform: scaleY(0);
+    transform-origin: center top;
+  }
+}
+
+@keyframes js-anim--expand {
+  from {
+    opacity: 0;
+    transform: scaleY(0);
+    transform-origin: center top;
+  }
+  to {
+    opacity: 1;
+    transform: scaleY(1);
+  }
+}
+
+@keyframes js-anim--slide-left {
+  from {
+    opacity: 1;
+    transform: translateX(0);
+  }
+  to {
+    opacity: 0;
+    transform: translateX(-100%);
+    transform-origin: center top;
+  }
+}
+
+@keyframes js-anim--slide-left__back {
+  from {
+    opacity: 0;
+    transform: translateX(-100%);
+    transform-origin: center top;
+  }
+  to {
+    opacity: 1;
+    transform: translateX(0);
+  }
+}
+
+@keyframes js-anim--slide-right {
+  from {
+    opacity: 1;
+    transform: translateX(0);
+  }
+  to {
+    opacity: 0;
+    transform: translateX(100%);
+    transform-origin: center top;
+  }
+}
+
+@keyframes js-anim--slide-right__back {
+  from {
+    opacity: 0;
+    transform: translateX(100%);
+    transform-origin: center top;
+  }
+  to {
+    opacity: 1;
+    transform: translateX(0);
+  }
+}
+
+@keyframes js-anim--slide-up {
+  from {
+    opacity: 1;
+    transform: translateY(0);
+  }
+  to {
+    opacity: 0;
+    transform: translateY(-100%);
+    transform-origin: center top;
+  }
+}
+
+@keyframes js-anim--slide-up__back {
+  from {
+    opacity: 0;
+    transform: translateY(-100%);
+    transform-origin: center top;
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes js-anim--slide-down {
+  from {
+    opacity: 1;
+    transform: translateY(0);
+  }
+  to {
+    opacity: 0;
+    transform: translateY(100%);
+    transform-origin: center top;
+  }
+}
+
+@keyframes js-anim--slide-down__back {
+  from {
+    opacity: 0;
+    transform: translateY(100%);
+    transform-origin: center top;
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+:root {
+  --js-css-animation--duration: 800ms;
+  --js-css-animation--timing-function: cubic-bezier(0.455, 0.03, 0.515, 0.955);
+  --js-css-animation--delay: 0;
+  --js-css-animation--fill-mode: forwards;
+}
+
+.js-anim--dimensions-transitions {
+  transition-property: max-width, max-height;
+  transition-duration: var(--js-css-animation--duration);
+  transition-timing-function: var(--js-css-animation--timing-function);
+  transition-delay: var(--js-css-animation--delay);
+}
+
+.js-anim--width-transition {
+  transition: max-width var(--js-css-animation--duration)
+    var(--js-css-animation--timing-function) var(--js-css-animation--delay);
+}
+
+.js-anim--height-transition {
+  transition: max-height var(--js-css-animation--duration)
+    var(--js-css-animation--timing-function) var(--js-css-animation--delay);
+}
+
+.js-anim--collapse,
+.js-anim--expand,
+.js-anim--slide-up,
+.js-anim--slide-up__back,
+.js-anim--slide-down,
+.js-anim--slide-down__back,
+.js-anim--slide-left,
+.js-anim--slide-left__back,
+.js-anim--slide-right,
+.js-anim--slide-right__back {
+  animation-duration: var(--js-css-animation--duration);
+  animation-timing-function: var(--js-css-animation--timing-function);
+  animation-delay: var(--js-css-animation--delay);
+  animation-fill-mode: var(--js-css-animation--fill-mode);
+}
+
+.js-anim--collapse {
+  animation-name: js-anim--collapse;
+}
+
+.js-anim--expand {
+  animation-name: js-anim--expand;
+}
+
+.js-anim--slide-up {
+  animation-name: js-anim--slide-up;
+}
+
+.js-anim--slide-up__back {
+  animation-name: js-anim--slide-up__back;
+}
+
+.js-anim--slide-down {
+  animation-name: js-anim--slide-down;
+}
+
+.js-anim--slide-down__back {
+  animation-name: js-anim--slide-down__back;
+}
+
+.js-anim--slide-left {
+  animation-name: js-anim--slide-left;
+}
+
+.js-anim--slide-left__back {
+  animation-name: js-anim--slide-left__back;
+}
+
+.js-anim--slide-right {
+  animation-name: js-anim--slide-right;
+}
+
+.js-anim--slide-right__back {
+  animation-name: js-anim--slide-right__back;
+}
+
+.js-anim--collapsed {
+  display: none;
+}
+
+.js-anim--hidden {
+  visibility: hidden;
+}
+
+.js-anim--btn-cursor {
+  --js-css-animation--cursor: pointer;
+  cursor: var(--js-css-animation--cursor);
+}

@@ -18,7 +18,6 @@
   margin: 0 auto;
   font-weight: 700;
   color: hsl(0, 66%, 46%);
-  /* transition: 500ms max-height cubic-bezier(0, 1, 0, 1); */
 }
 
 * {
@@ -171,9 +170,9 @@ main {
   width: clamp(300px, 90vw, 90vw);
 }
 
-/* .transition * :not(button) {
+.transition * :not(button) {
   transition: 200ms all ease-in;
-} */
+}
 
 p {
   flex-wrap: wrap;
@@ -182,6 +181,10 @@ p {
   align-items: center;
   gap: 0.75rem;
   font-size: 1.5rem;
+}
+
+.msg-area__text {
+  margin-top: 1.5em;
 }
 
 .columns-input {
@@ -203,15 +206,19 @@ p {
   box-shadow: 0 0 0.5rem var(--bg-shadow), inset 0 0 0.25rem var(--bg-shadow);
 }
 
-.columns-input:focus {
+.columns-input:focus,
+.columns-input:hover {
   outline-color: var(--inpt-border-color);
 }
 
-.columns-input:hover {
-  border-color: var(--inpt-border-color);
+.columns-input:disabled {
+  outline-color: var(--bg-shadow);
+  /* background-color: lightcoral; */
+  background-color: rgba(255, 0, 0, 0.34);
 }
 
 button {
+  opacity: 1;
   cursor: pointer;
   background-color: var(--lighter-bg-color);
   color: var(--font-color);
@@ -224,7 +231,7 @@ button {
   padding: 0.7em;
   padding-bottom: 0.5em;
   box-shadow: 0 0 0.5rem var(--bg-shadow);
-  transition: scale 200ms ease;
+  transition: scale 200ms ease, opacity 500ms ease-in-out;
   z-index: 1; /* Fix color-picker overlaying when random color mode on */
 }
 
@@ -242,6 +249,11 @@ button:active {
 button:focus,
 #download-icon:focus {
   outline-color: var(--inpt-border-color);
+}
+
+button:disabled {
+  background-color: var(--bg-shadow);
+  opacity: 0.75;
 }
 
 .color-mode-selector {

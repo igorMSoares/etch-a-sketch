@@ -33,6 +33,7 @@ export const setCssProperty = (element, property, value) => {
 };
 
 const updateCssProperties = (element, opts) => {
+  removeCustomCssProperties(element);
   CUSTOM_CSS_PROPERTIES.forEach(prop => {
     if (typeof opts[prop] === 'string') {
       setCssProperty(element, prop, opts[prop]);
@@ -81,6 +82,22 @@ const removeMotionCssClasses = element => {
   });
 };
 
+const setToggleBtn = element => {
+  const hash = str => {
+    let hash = '';
+    for (let i = 0; i < str.length; i++) {
+      hash += str.charCodeAt(i).toString();
+    }
+    return hash;
+  };
+
+  let tmp = '';
+  element.getAttributeNames().map(attr => {
+    tmp += attr + element.getAttribute(attr);
+  });
+  return element.tagName + element.parentElement.tagName + hash(tmp).slice(-15);
+};
+
 const animate = (animType, element, action, id, opts = {}) => {
   element.setAttribute('js-anim--disabled', 'true');
   const { complete, start, toggleBtn, resetAfter, hide } = opts;
@@ -92,8 +109,6 @@ const animate = (animType, element, action, id, opts = {}) => {
     moveBack: 'move',
   });
   let parentMeasures, dimension, currentTransition;
-  console.log(element);
-  console.log(action);
 
   if (!CALLBACK_TRACKER.executing[toggleBtn])
     CALLBACK_TRACKER.executing[toggleBtn] = {};
@@ -109,12 +124,11 @@ const animate = (animType, element, action, id, opts = {}) => {
     }));
   }
 
-  if (
-    typeof start === 'function' &&
-    !CALLBACK_TRACKER.executing[toggleBtn].start
-  ) {
-    CALLBACK_TRACKER.executing[toggleBtn].start = true;
-    start();
+  if (typeof start === 'function') {
+    if (toggleBtn && !CALLBACK_TRACKER.executing[toggleBtn].start) {
+      CALLBACK_TRACKER.executing[toggleBtn].start = true;
+      start();
+    } else if (!toggleBtn) start();
   }
 
   if (isMotion(animType)) {
@@ -122,7 +136,13 @@ const animate = (animType, element, action, id, opts = {}) => {
     removeMotionCssClasses(element);
   }
   element.classList.remove(CLASS_NAMES[OPPOSITE_ACTION[action]][id]);
-  element.classList.add(CLASS_NAMES[action][id]);
+  if (delay) {
+    setTimeout(() => {
+      element.classList.add(CLASS_NAMES[action][id]);
+    }, parseInt(delay));
+  } else {
+    element.classList.add(CLASS_NAMES[action][id]);
+  }
 
   if (isVisibility(animType)) {
     setTimeout(() => {
@@ -151,12 +171,11 @@ const animate = (animType, element, action, id, opts = {}) => {
 
     setTimeout(() => element.removeAttribute('js-anim--disabled'), 100);
 
-    if (
-      typeof complete === 'function' &&
-      !CALLBACK_TRACKER.executing[toggleBtn].complete
-    ) {
-      CALLBACK_TRACKER.executing[toggleBtn].complete = true;
-      complete();
+    if (typeof complete === 'function') {
+      if (toggleBtn && !CALLBACK_TRACKER.executing[toggleBtn].complete) {
+        CALLBACK_TRACKER.executing[toggleBtn].complete = true;
+        complete();
+      } else if (!toggleBtn) complete();
     }
 
     if (toggleBtn) {
@@ -247,6 +266,8 @@ const jsCssAnimations = (function () {
       for (const [name, id] of Object.entries(animIds)) {
         handlers[name] = (element, opts = {}) => {
           const {
+            start,
+            complete,
             widthTransition = false,
             heightTransition = false,
             hide = true,
@@ -264,6 +285,8 @@ const jsCssAnimations = (function () {
           }
           updateCssProperties(element, opts);
           animate(animType, element, action, id, {
+            start,
+            complete,
             widthTransition,
             heightTransition,
             hide,

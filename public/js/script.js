@@ -39,90 +39,43 @@ const isMobile = () => {
   );
 };
 
-const setVisibility = (element, opts = {}) => {
-  const el =
-    element instanceof HTMLElement
-      ? element
-      : typeof element === 'string'
-      ? document.getElementById(element)
-      : null;
-  if (!el)
-    throw new ReferenceError(
-      `Invalid element: '${element}' Expected HTMLElement or a valid element id`
-    );
-  const { motion = 'slideUp' } = opts;
-
-  return {
-    show: () => jsCssAnimations[motion](el, { ...opts, action: 'show' }),
-    hide: () => jsCssAnimations[motion](el, { ...opts, action: 'hide' }),
-  };
-};
-
 const hideColorPicker = () => {
   const colorPicker = document.getElementById('color-picker');
-  if (
-    getComputedStyle(colorPicker).visibility !== 'hidden' &&
-    getComputedStyle(colorPicker).display !== 'none'
-  ) {
-    setVisibility('color-picker', {
-      duration: '500ms',
-      timingFunction: 'ease',
-      motion: 'slideUp',
-    }).hide();
-  }
+  jsCssAnimations.slideUp(colorPicker, {
+    action: 'hide',
+    timingFunction: 'ease',
+  });
 };
 
 const showColorPicker = () => {
   const colorPicker = document.getElementById('color-picker');
-  if (
-    getComputedStyle(colorPicker).visibility === 'hidden' ||
-    getComputedStyle(colorPicker).display === 'none'
-  ) {
-    setVisibility('color-picker', { motion: 'slideDown' }).show();
-  }
+  jsCssAnimations.slideDown(colorPicker, {
+    action: 'show',
+    timingFunction: 'ease',
+  });
 };
 
 const displayMessage = (message, duration = 2000) => {
-  const msg = document.createElement('p');
+  const msg = document.querySelector('.msg-area__text');
+  const msgArea = document.getElementById('msg-area');
+  document.getElementById('number-of-columns').disabled = true;
+  document.getElementById('reset-canvas-btn').disabled = true;
   msg.innerText = message;
-  // document.getElementById('msg-area').appendChild(msg);
-  // document.getElementById('msg-area').style.setProperty('max-height', '5rem');
-  jsCssAnimations.collapse(document.getElementById('msg-area'), {
-    duration: '0ms',
-    hide: false,
-  });
-  setTimeout(() => {
-    document.getElementById('msg-area').appendChild(msg);
-    jsCssAnimations.collapse(document.getElementById('msg-area'), {
-      action: 'show',
-      heightTransition: true,
-      hide: false,
-    });
-    // setVisibility('msg-area', {
-    //   motion: 'collapse',
-    //   heightTransition: true,
-    // }).show();
-  }, 0);
 
-  setTimeout(() => {
-    jsCssAnimations.collapse(document.getElementById('msg-area'), {
-      action: 'hide',
-      heightTransition: true,
-      hide: false,
-    });
-    // setVisibility(msg, {
-    //   motion: 'slideDown',
-    //   heightTransition: true,
-    // }).hide();
-    // setTimeout(
-    //   () =>
-    //     document
-    //       .getElementById('msg-area')
-    //       .style.setProperty('max-height', '0'),
-    //   500
-    // );
-    // setTimeout(() => (document.getElementById('msg-area').innerHTML = ''), 100);
-  }, duration);
+  jsCssAnimations.slideDown(msgArea, {
+    action: 'show',
+    complete: () => {
+      jsCssAnimations.collapse(msgArea, {
+        duration: '400ms',
+        delay: `${duration}ms`,
+        complete: () => {
+          msg.innerHTML = '';
+          document.getElementById('number-of-columns').disabled = false;
+          document.getElementById('reset-canvas-btn').disabled = false;
+        },
+      });
+    },
+  });
 };
 
 const findCornerClass = element =>
@@ -628,8 +581,8 @@ const initDownloadHandler = () => {
   };
 
   const boxContent = document.querySelector('#download p').innerText;
-  document.getElementById('download-icon').addEventListener('click', _ => {
-    setVisibility('download-icon', { duration: '400ms' }).hide();
+  document.getElementById('download-icon').addEventListener('click', e => {
+    jsCssAnimations.fade(e.target, { duration: '400ms' });
     document
       .querySelector('#download p')
       .style.setProperty('line-height', 'normal');
@@ -688,7 +641,9 @@ const initDownloadHandler = () => {
       root.style.removeProperty('cursor');
       document.querySelector('#download p').style.removeProperty('line-height');
       setTimeout(() => {
-        setVisibility('download-icon').show();
+        jsCssAnimations.slideUp(document.getElementById('download-icon'), {
+          action: 'show',
+        });
       }, 400);
       document.querySelector('#download p').innerText = boxContent;
     });
@@ -698,9 +653,6 @@ const initDownloadHandler = () => {
 };
 
 const start = squaresPerRow => {
-  // jsCssAnimations.slideUp(document.getElementById('msg-area'), {
-  //   duration: '100ms',
-  // });
   initToggleInstructionsHandler();
   initDownloadHandler();
 

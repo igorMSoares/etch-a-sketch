@@ -53,41 +53,75 @@ const setVisibility = (element, opts = {}) => {
   const { motion = 'slideUp' } = opts;
 
   return {
-    show: () => jsCssAnimations.show[motion](el, opts),
-    hide: () => jsCssAnimations.hide[motion](el, opts),
+    show: () => jsCssAnimations[motion](el, { ...opts, action: 'show' }),
+    hide: () => jsCssAnimations[motion](el, { ...opts, action: 'hide' }),
   };
 };
 
 const hideColorPicker = () => {
-  setVisibility('color-picker', {
-    duration: '500ms',
-    timingFunction: 'ease',
-    resetAfter: false,
-  }).hide();
+  const colorPicker = document.getElementById('color-picker');
+  if (
+    getComputedStyle(colorPicker).visibility !== 'hidden' &&
+    getComputedStyle(colorPicker).display !== 'none'
+  ) {
+    setVisibility('color-picker', {
+      duration: '500ms',
+      timingFunction: 'ease',
+      motion: 'slideUp',
+    }).hide();
+  }
 };
 
-const showColorPicker = () => setVisibility('color-picker').show();
+const showColorPicker = () => {
+  const colorPicker = document.getElementById('color-picker');
+  if (
+    getComputedStyle(colorPicker).visibility === 'hidden' ||
+    getComputedStyle(colorPicker).display === 'none'
+  ) {
+    setVisibility('color-picker', { motion: 'slideDown' }).show();
+  }
+};
 
 const displayMessage = (message, duration = 2000) => {
   const msg = document.createElement('p');
   msg.innerText = message;
-  document.getElementById('msg-area').style.setProperty('max-height', '5rem');
+  // document.getElementById('msg-area').appendChild(msg);
+  // document.getElementById('msg-area').style.setProperty('max-height', '5rem');
+  jsCssAnimations.collapse(document.getElementById('msg-area'), {
+    duration: '0ms',
+    hide: false,
+  });
   setTimeout(() => {
     document.getElementById('msg-area').appendChild(msg);
-    setVisibility('msg-area').show();
-  }, 400);
+    jsCssAnimations.collapse(document.getElementById('msg-area'), {
+      action: 'show',
+      heightTransition: true,
+      hide: false,
+    });
+    // setVisibility('msg-area', {
+    //   motion: 'collapse',
+    //   heightTransition: true,
+    // }).show();
+  }, 0);
 
   setTimeout(() => {
-    setVisibility('msg-area').hide();
-    setTimeout(
-      () =>
-        document
-          .getElementById('msg-area')
-          .style.setProperty('max-height', '0'),
-      500
-    );
-
-    setTimeout(() => (document.getElementById('msg-area').innerHTML = ''), 500);
+    jsCssAnimations.collapse(document.getElementById('msg-area'), {
+      action: 'hide',
+      heightTransition: true,
+      hide: false,
+    });
+    // setVisibility(msg, {
+    //   motion: 'slideDown',
+    //   heightTransition: true,
+    // }).hide();
+    // setTimeout(
+    //   () =>
+    //     document
+    //       .getElementById('msg-area')
+    //       .style.setProperty('max-height', '0'),
+    //   500
+    // );
+    // setTimeout(() => (document.getElementById('msg-area').innerHTML = ''), 100);
   }, duration);
 };
 
@@ -440,6 +474,7 @@ const resetCanvas = () => {
     canvas.style.removeProperty('height');
     canvas.style.removeProperty('width');
     renderCanvas(columns);
+    brush.mode = 'brush';
   }
 };
 
@@ -553,7 +588,7 @@ const initToggleInstructionsHandler = () => {
   removeOutlineOnClick(toggler);
   initKeydownEvent(toggler);
 
-  jsCssAnimations.animate('collapse', {
+  jsCssAnimations.init.collapse({
     toggleBtn: '.toggle-instructions',
     duration: '1000ms',
     start: () => {
@@ -663,6 +698,9 @@ const initDownloadHandler = () => {
 };
 
 const start = squaresPerRow => {
+  // jsCssAnimations.slideUp(document.getElementById('msg-area'), {
+  //   duration: '100ms',
+  // });
   initToggleInstructionsHandler();
   initDownloadHandler();
 

@@ -18,7 +18,7 @@
   margin: 0 auto;
   font-weight: 700;
   color: hsl(0, 66%, 46%);
-  transition: 500ms max-height cubic-bezier(0, 1, 0, 1);
+  /* transition: 500ms max-height cubic-bezier(0, 1, 0, 1); */
 }
 
 * {
@@ -171,9 +171,9 @@ main {
   width: clamp(300px, 90vw, 90vw);
 }
 
-.transition * :not(button) {
+/* .transition * :not(button) {
   transition: 200ms all ease-in;
-}
+} */
 
 p {
   flex-wrap: wrap;

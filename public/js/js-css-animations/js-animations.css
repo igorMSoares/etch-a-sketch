@@ -118,11 +118,34 @@
   }
 }
 
+@keyframes js-anim--fade-out {
+  from {
+    opacity: 1;
+    filter: blur(0);
+  }
+  to {
+    opacity: 0;
+    filter: blur(var(--js-css-animation--blur));
+  }
+}
+
+@keyframes js-anim--fade-in {
+  from {
+    opacity: 0;
+    filter: blur(var(--js-css-animation--blur));
+  }
+  to {
+    opacity: 1;
+    filter: blur(0);
+  }
+}
+
 :root {
   --js-css-animation--duration: 800ms;
   --js-css-animation--timing-function: cubic-bezier(0.455, 0.03, 0.515, 0.955);
   --js-css-animation--delay: 0;
   --js-css-animation--fill-mode: forwards;
+  --js-css-animation--blur: 0.5px;
 }
 
 .js-anim--dimensions-transitions {
@@ -151,11 +174,79 @@
 .js-anim--slide-left,
 .js-anim--slide-left__back,
 .js-anim--slide-right,
-.js-anim--slide-right__back {
+.js-anim--slide-right__back,
+.js-anim--fade-in,
+.js-anim--fade-out {
   animation-duration: var(--js-css-animation--duration);
   animation-timing-function: var(--js-css-animation--timing-function);
   animation-delay: var(--js-css-animation--delay);
   animation-fill-mode: var(--js-css-animation--fill-mode);
+}
+
+.js-anim--rotate-up,
+.js-anim--rotate-up__ccw,
+.js-anim--rotate-right,
+.js-anim--rotate-right__ccw,
+.js-anim--rotate-down,
+.js-anim--rotate-down__ccw,
+.js-anim--rotate-left,
+.js-anim--rotate-left__ccw {
+  transform: rotate(var(--js-css-animation--rotation-deg));
+  transition-property: transform;
+  transition-duration: var(--js-css-animation--duration);
+  transition-timing-function: var(--js-css-animation--timing-function);
+  transition-delay: var(--js-css-animation--delay);
+}
+
+.js-anim--rotate-up {
+  --js-css-animation--rotation-deg: 0deg;
+}
+
+.js-anim--rotate-up__ccw {
+  --js-css-animation--rotation-deg: -360deg;
+}
+
+.js-anim--rotate-up,
+.js-anim--rotate-right,
+.js-anim--rotate-down,
+.js-anim--rotate-left {
+  --js-css-animation--rotation-sign: 1;
+}
+
+.js-anim--rotate-up__ccw,
+.js-anim--rotate-right__ccw,
+.js-anim--rotate-down__ccw,
+.js-anim--rotate-left__ccw {
+  --js-css-animation--rotation-sign: -1;
+}
+
+.js-anim--rotate-right,
+.js-anim--rotate-left__ccw {
+  --js-css-animation--rotation-deg: calc(
+    90deg * var(--js-css-animation--rotation-sign)
+  );
+}
+
+.js-anim--rotate-down,
+.js-anim--rotate-down__ccw {
+  --js-css-animation--rotation-deg: calc(
+    180deg * var(--js-css-animation--rotation-sign)
+  );
+}
+
+.js-anim--rotate-left,
+.js-anim--rotate-right__ccw {
+  --js-css-animation--rotation-deg: calc(
+    270deg * var(--js-css-animation--rotation-sign)
+  );
+}
+
+.js-anim--fade-out {
+  animation-name: js-anim--fade-out;
+}
+
+.js-anim--fade-in {
+  animation-name: js-anim--fade-in;
 }
 
 .js-anim--collapse {

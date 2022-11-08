@@ -41,17 +41,31 @@ const isMobile = () => {
 
 const hideColorPicker = () => {
   const colorPicker = document.getElementById('color-picker');
+  const checkBoxes = document.querySelectorAll('#mode-selection input');
   jsCssAnimations.slideUp(colorPicker, {
     action: 'hide',
     timingFunction: 'ease',
+    start: () => {
+      checkBoxes.forEach(inpt => (inpt.disabled = true));
+    },
+    complete: () => {
+      checkBoxes.forEach(inpt => (inpt.disabled = false));
+    },
   });
 };
 
 const showColorPicker = () => {
   const colorPicker = document.getElementById('color-picker');
+  const checkBoxes = document.querySelectorAll('#mode-selection input');
   jsCssAnimations.slideDown(colorPicker, {
     action: 'show',
     timingFunction: 'ease',
+    start: () => {
+      checkBoxes.forEach(inpt => (inpt.disabled = true));
+    },
+    complete: () => {
+      checkBoxes.forEach(inpt => (inpt.disabled = false));
+    },
   });
 };
 

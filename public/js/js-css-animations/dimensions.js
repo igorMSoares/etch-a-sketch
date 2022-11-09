@@ -29,7 +29,7 @@ const setParentCssProperties = element => {
     );
 
     if (currentProp !== getRootCssProperty(prop)) {
-      setCssProperty(element.parentElement, PROPERTY_NAMES[prop], currentProp);
+      setCssProperty(element.parentElement, prop, currentProp);
     }
   });
 };

@@ -143,7 +143,7 @@
 :root {
   --js-css-animation--duration: 800ms;
   --js-css-animation--timing-function: cubic-bezier(0.455, 0.03, 0.515, 0.955);
-  --js-css-animation--delay: 0;
+  --js-css-animation--delay: 0ms;
   --js-css-animation--fill-mode: forwards;
   --js-css-animation--blur: 0.5px;
 }

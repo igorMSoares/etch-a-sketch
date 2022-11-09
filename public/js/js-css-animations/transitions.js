@@ -98,6 +98,8 @@ export const setDimensionsTransitions = (element, wTransit, hTransit) => {
     className = CLASS_NAMES.heightTransition;
   }
 
-  if (className) element.classList.add(className);
-  if (currTransition) appendTransition(element, className, currTransition);
+  if (className) {
+    element.classList.add(className);
+    if (currTransition) appendTransition(element, className, currTransition);
+  }
 };

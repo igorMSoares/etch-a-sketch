@@ -42,9 +42,11 @@ const isMobile = () => {
 const hideColorPicker = () => {
   const colorPicker = document.getElementById('color-picker');
   const checkBoxes = document.querySelectorAll('#mode-selection input');
-  jsCssAnimations.slideUp(colorPicker, {
+  jsCssAnimations.fade(colorPicker, {
     action: 'hide',
-    timingFunction: 'ease',
+    duration: 250,
+    timingFunction: 'ease-in-out',
+    heightTransition: false,
     start: () => {
       checkBoxes.forEach(inpt => (inpt.disabled = true));
     },
@@ -57,9 +59,10 @@ const hideColorPicker = () => {
 const showColorPicker = () => {
   const colorPicker = document.getElementById('color-picker');
   const checkBoxes = document.querySelectorAll('#mode-selection input');
-  jsCssAnimations.slideDown(colorPicker, {
+  jsCssAnimations.collapse(colorPicker, {
     action: 'show',
     timingFunction: 'ease',
+    heightTransition: false,
     start: () => {
       checkBoxes.forEach(inpt => (inpt.disabled = true));
     },
@@ -71,23 +74,22 @@ const showColorPicker = () => {
 
 const displayMessage = (message, duration = 2000) => {
   const msg = document.querySelector('.msg-area__text');
-  const msgArea = document.getElementById('msg-area');
   document.getElementById('number-of-columns').disabled = true;
   document.getElementById('reset-canvas-btn').disabled = true;
   msg.innerText = message;
 
-  jsCssAnimations.slideDown(msgArea, {
+  jsCssAnimations.collapse(msg, {
     action: 'show',
     complete: () => {
-      jsCssAnimations.collapse(msgArea, {
-        duration: '400ms',
-        delay: `${duration}ms`,
-        complete: () => {
-          msg.innerHTML = '';
-          document.getElementById('number-of-columns').disabled = false;
-          document.getElementById('reset-canvas-btn').disabled = false;
-        },
-      });
+      setTimeout(() => {
+        jsCssAnimations.slideUp(msg, {
+          complete: () => {
+            msg.innerHTML = '';
+            document.getElementById('number-of-columns').disabled = false;
+            document.getElementById('reset-canvas-btn').disabled = false;
+          },
+        });
+      }, duration);
     },
   });
 };
@@ -596,7 +598,7 @@ const initDownloadHandler = () => {
 
   const boxContent = document.querySelector('#download p').innerText;
   document.getElementById('download-icon').addEventListener('click', e => {
-    jsCssAnimations.fade(e.target, { duration: '400ms' });
+    jsCssAnimations.slideRight(e.target, { duration: 250 });
     document
       .querySelector('#download p')
       .style.setProperty('line-height', 'normal');

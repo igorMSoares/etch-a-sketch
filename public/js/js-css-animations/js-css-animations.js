@@ -35,7 +35,13 @@ export const setCssProperty = (element, property, value) => {
 const updateCssProperties = (element, opts) => {
   removeCustomCssProperties(element);
   CUSTOM_CSS_PROPERTIES.forEach(prop => {
-    if (typeof opts[prop] === 'string') {
+    if (typeof opts[prop] === 'string' || typeof opts[prop] === 'number') {
+      if (
+        ['delay', 'duration'].includes(prop) &&
+        typeof opts[prop] === 'number'
+      ) {
+        opts[prop] = `${opts[prop]}ms`;
+      }
       setCssProperty(element, prop, opts[prop]);
     }
   });
@@ -57,11 +63,11 @@ const getToggleSelector = eventTarget => {
 const getTotalAnimTime = element => {
   const total = {};
   ['duration', 'delay'].forEach(prop => {
-    total[prop] = Number(
-      getComputedStyle(element)
-        .getPropertyValue(PROPERTY_NAMES[prop])
-        .match(/\d+/)
-    );
+    let match = getComputedStyle(element)
+      .getPropertyValue(PROPERTY_NAMES[prop])
+      .match(/(\d+\.\d+|\d+)(ms|s)?/);
+    total[prop] =
+      match.at(-1) === 's' ? Number(match[1]) * 1000 : Number(match[1]);
   });
   return total;
 };
@@ -80,22 +86,6 @@ const removeMotionCssClasses = element => {
   Object.values(MOTION_ANIMS_ID).forEach(animId => {
     element.classList.remove(CLASS_NAMES.move[animId]);
   });
-};
-
-const setToggleBtn = element => {
-  const hash = str => {
-    let hash = '';
-    for (let i = 0; i < str.length; i++) {
-      hash += str.charCodeAt(i).toString();
-    }
-    return hash;
-  };
-
-  let tmp = '';
-  element.getAttributeNames().map(attr => {
-    tmp += attr + element.getAttribute(attr);
-  });
-  return element.tagName + element.parentElement.tagName + hash(tmp).slice(-15);
 };
 
 const animate = (animType, element, action, id, opts = {}) => {
@@ -127,14 +117,17 @@ const animate = (animType, element, action, id, opts = {}) => {
   if (typeof start === 'function') {
     if (toggleBtn && !CALLBACK_TRACKER.executing[toggleBtn].start) {
       CALLBACK_TRACKER.executing[toggleBtn].start = true;
+      start();
+    } else if (!toggleBtn) {
+      start();
     }
-    start();
   }
 
   if (isMotion(animType)) {
     currentTransition = getCurrentTransition(element);
     removeMotionCssClasses(element);
   }
+
   element.classList.remove(CLASS_NAMES[OPPOSITE_ACTION[action]][id]);
   if (delay) {
     setTimeout(() => {
@@ -174,8 +167,10 @@ const animate = (animType, element, action, id, opts = {}) => {
     if (typeof complete === 'function') {
       if (toggleBtn && !CALLBACK_TRACKER.executing[toggleBtn].complete) {
         CALLBACK_TRACKER.executing[toggleBtn].complete = true;
+        complete();
+      } else if (!toggleBtn) {
+        complete();
       }
-      complete();
     }
 
     if (toggleBtn) {
@@ -203,20 +198,22 @@ const getAction = (element, animType) => {
     : null;
 };
 
-const eventHandler = (triggerBtn, id, animType, opts = {}) => {
-  document.querySelectorAll(getToggleSelector(triggerBtn)).forEach(element => {
-    const action = getAction(element, animType);
+const eventHandler = (el, animType, animationId, opts) => {
+  return e => {
+    e.stopPropagation();
+
+    const action = getAction(el, animType);
     if (!action)
       throw new ReferenceError(
         `Can't find a valid action for this animation type`
       );
 
-    if (!element.getAttribute('js-anim--disabled'))
-      animate(animType, element, action, id, opts);
-  });
+    if (!el.getAttribute('js-anim--disabled'))
+      animate(animType, el, action, animationId, opts);
+  };
 };
 
-const init = (animationId, opts = {}, animationType) => {
+const init = (animationId, opts = {}, animType) => {
   const {
     toggleBtn = `.${CLASS_NAMES.toggleBtn}`,
     toggleSelector,
@@ -235,21 +232,45 @@ const init = (animationId, opts = {}, animationType) => {
     }
 
     document.querySelectorAll(getToggleSelector(btn)).forEach(el => {
-      updateCssProperties(el, opts);
-      if (isVisibility(animationType)) {
-        setDimensionsTransitions(
-          el.parentElement,
-          widthTransition,
-          heightTransition
-        );
-      }
-    });
+      preset(el, {
+        animType,
+        widthTransition,
+        heightTransition,
+        opts,
+      });
 
-    btn.addEventListener('click', e => {
-      e.stopPropagation();
-      eventHandler(e.target, animationId, animationType, opts);
+      btn.addEventListener(
+        'click',
+        eventHandler(el, animType, animationId, opts)
+      );
     });
   });
+};
+
+const getTargets = element => {
+  const el =
+    element instanceof HTMLElement
+      ? [element]
+      : typeof element === 'string'
+      ? document.querySelectorAll(element)
+      : null;
+  if (!el)
+    throw new ReferenceError(
+      `Invalid element: '${element}' Expected HTMLElement or a valid element id`
+    );
+  return el;
+};
+
+const preset = (el, args) => {
+  const { opts, animType, widthTransition, heightTransition } = args;
+  updateCssProperties(el, opts);
+  if (isVisibility(animType)) {
+    setDimensionsTransitions(
+      el.parentElement,
+      widthTransition,
+      heightTransition
+    );
+  }
 };
 
 const jsCssAnimations = (function () {
@@ -262,12 +283,12 @@ const jsCssAnimations = (function () {
           : { animIds: VISIBILITY_ANIMS_ID, animType: 'visibility' };
 
       for (const [name, id] of Object.entries(animIds)) {
-        handlers[name] = (element, opts = {}) => {
+        handlers[name] = (target, opts = {}) => {
           const {
             start,
             complete,
-            widthTransition = false,
-            heightTransition = false,
+            widthTransition = true,
+            heightTransition = true,
             hide = true,
             resetAfter = true,
           } = opts;
@@ -281,14 +302,22 @@ const jsCssAnimations = (function () {
           ) {
             action = verb;
           }
-          updateCssProperties(element, opts);
-          animate(animType, element, action, id, {
-            start,
-            complete,
-            widthTransition,
-            heightTransition,
-            hide,
-            resetAfter,
+          getTargets(target).forEach(element => {
+            preset(element, {
+              animType,
+              widthTransition,
+              heightTransition,
+              opts,
+            });
+
+            animate(animType, element, action, id, {
+              start,
+              complete,
+              widthTransition,
+              heightTransition,
+              hide,
+              resetAfter,
+            });
           });
         };
       }

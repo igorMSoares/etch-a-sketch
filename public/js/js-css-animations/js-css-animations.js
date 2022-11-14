@@ -206,7 +206,14 @@ const animate = (element, action, id, opts = {}) => {
       }, delay);
     }
 
-    if (resetAfter) removeCustomCssProperties(element);
+    const defaultDuration = getTimeInMs(
+      getComputedStyle(document.documentElement).getPropertyValue(
+        PROPERTY_NAMES.duration
+      )
+    );
+    setTimeout(() => {
+      if (resetAfter) removeCustomCssProperties(element);
+    }, defaultDuration);
   }, duration + delay);
 };
 

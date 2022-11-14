@@ -42,34 +42,41 @@ const isMobile = () => {
 const hideColorPicker = () => {
   const colorPicker = document.getElementById('color-picker');
   const checkBoxes = document.querySelectorAll('#mode-selection input');
-  jsCssAnimations.fade(colorPicker, {
-    action: 'hide',
-    duration: 250,
-    timingFunction: 'ease-in-out',
-    heightTransition: false,
-    start: () => {
-      checkBoxes.forEach(inpt => (inpt.disabled = true));
-    },
-    complete: () => {
-      checkBoxes.forEach(inpt => (inpt.disabled = false));
-    },
-  });
+  if (getComputedStyle(colorPicker).opacity === '1') {
+    jsCssAnimations.hide.slideUp(colorPicker, {
+      duration: 350,
+      timingFunction: 'ease-in-out',
+      heightTransition: false,
+      widthTransition: false,
+      hide: true,
+      start: () => {
+        checkBoxes.forEach(inpt => (inpt.disabled = true));
+      },
+      complete: () => {
+        checkBoxes.forEach(inpt => (inpt.disabled = false));
+      },
+    });
+  }
 };
 
 const showColorPicker = () => {
   const colorPicker = document.getElementById('color-picker');
   const checkBoxes = document.querySelectorAll('#mode-selection input');
-  jsCssAnimations.collapse(colorPicker, {
-    action: 'show',
-    timingFunction: 'ease',
-    heightTransition: false,
-    start: () => {
-      checkBoxes.forEach(inpt => (inpt.disabled = true));
-    },
-    complete: () => {
-      checkBoxes.forEach(inpt => (inpt.disabled = false));
-    },
-  });
+  if (getComputedStyle(colorPicker).opacity === '0') {
+    jsCssAnimations.show.slideUp(colorPicker, {
+      duration: 300,
+      timingFunction: 'ease-in-out',
+      heightTransition: false,
+      widthTransition: false,
+      hide: true,
+      start: () => {
+        checkBoxes.forEach(inpt => (inpt.disabled = true));
+      },
+      complete: () => {
+        checkBoxes.forEach(inpt => (inpt.disabled = false));
+      },
+    });
+  }
 };
 
 const displayMessage = (message, duration = 2000) => {
@@ -78,11 +85,10 @@ const displayMessage = (message, duration = 2000) => {
   document.getElementById('reset-canvas-btn').disabled = true;
   msg.innerText = message;
 
-  jsCssAnimations.collapse(msg, {
-    action: 'show',
+  jsCssAnimations.show.slideDown(msg, {
     complete: () => {
       setTimeout(() => {
-        jsCssAnimations.slideUp(msg, {
+        jsCssAnimations.hide.slideUp(msg, {
           complete: () => {
             msg.innerHTML = '';
             document.getElementById('number-of-columns').disabled = false;
@@ -559,7 +565,7 @@ const initToggleInstructionsHandler = () => {
 
   jsCssAnimations.init.collapse({
     toggleBtn: '.toggle-instructions',
-    duration: '1000ms',
+    duration: '1s',
     start: () => {
       const instructArea = document.getElementById('instructions');
       const rotateClass = [...toggler.classList].find(c => c.match(/rotate/));
@@ -598,7 +604,7 @@ const initDownloadHandler = () => {
 
   const boxContent = document.querySelector('#download p').innerText;
   document.getElementById('download-icon').addEventListener('click', e => {
-    jsCssAnimations.slideRight(e.target, { duration: 250 });
+    jsCssAnimations.hide.fade(e.target, { duration: 250 });
     document
       .querySelector('#download p')
       .style.setProperty('line-height', 'normal');
@@ -657,7 +663,7 @@ const initDownloadHandler = () => {
       root.style.removeProperty('cursor');
       document.querySelector('#download p').style.removeProperty('line-height');
       setTimeout(() => {
-        jsCssAnimations.slideUp(document.getElementById('download-icon'), {
+        jsCssAnimations.show.slideUp(document.getElementById('download-icon'), {
           action: 'show',
         });
       }, 400);

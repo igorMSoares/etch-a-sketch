@@ -124,13 +124,13 @@ const animate = (element, action, id, opts = {}) => {
   });
   let parentMeasures, dimension, currentTransition;
 
-  if (opts.staggerDelay && toggleBtn) {
+  if (toggleBtn) {
     if (!targetsStack[toggleBtn]) targetsStack[toggleBtn] = [];
     targetsStack[toggleBtn].push(element);
-  }
 
-  if (!CALLBACK_TRACKER.executing[toggleBtn])
-    CALLBACK_TRACKER.executing[toggleBtn] = {};
+    if (!CALLBACK_TRACKER.executing[toggleBtn])
+      CALLBACK_TRACKER.executing[toggleBtn] = {};
+  }
 
   if (isVisibility(animType)) {
     if (!toggleBtn) removeVisibilityCssClasses(element);
@@ -183,14 +183,6 @@ const animate = (element, action, id, opts = {}) => {
       element.classList.remove(CLASS_NAMES.moved);
     }
 
-    if (opts.staggerDelay) {
-      if (opts.queryIndex === opts.totalTargets - 1) {
-        targetsStack[toggleBtn].forEach(el => enable(el));
-      }
-    } else {
-      enable(element);
-    }
-
     if (typeof complete === 'function') {
       if (toggleBtn && !CALLBACK_TRACKER.executing[toggleBtn].complete) {
         CALLBACK_TRACKER.executing[toggleBtn].complete = true;
@@ -200,10 +192,15 @@ const animate = (element, action, id, opts = {}) => {
       }
     }
 
-    if (toggleBtn) {
-      setTimeout(() => {
-        delete CALLBACK_TRACKER.executing[toggleBtn];
-      }, delay);
+    if (toggleBtn && opts.queryIndex === opts.totalTargets - 1) {
+      opts.staggerDelay
+        ? delete CALLBACK_TRACKER.executing[toggleBtn]
+        : setTimeout(() => {
+            delete CALLBACK_TRACKER.executing[toggleBtn];
+          }, delay);
+      targetsStack[toggleBtn].forEach(el => enable(el));
+    } else if (!toggleBtn) {
+      enable(element);
     }
 
     const defaultDuration = getTimeInMs(

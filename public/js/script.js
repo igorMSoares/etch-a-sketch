@@ -565,6 +565,9 @@ const initToggleInstructionsHandler = () => {
 
   jsCssAnimations.init.collapse({
     toggleBtn: '.toggle-instructions',
+    // staggerDelay: '0.8s',
+    // widthTransition: false,
+    // heightTransition: false,
     start: () => {
       const rotateClass = [...toggler.classList].find(c => c.match(/rotate/));
       if (!rotateClass || rotateClass.match('rotate-up')) {
@@ -576,13 +579,9 @@ const initToggleInstructionsHandler = () => {
       }
     },
     complete: () => {
-      const instructArea = document.getElementById('instructions');
-      const opacity = getComputedStyle(
-        document.getElementById('instructions-content')
-      ).opacity;
-      opacity > 0.8
-        ? instructArea.classList.remove('instructions-area__collapsed')
-        : instructArea.classList.add('instructions-area__collapsed');
+      document
+        .getElementById('instructions')
+        .classList.toggle('instructions-area__collapsed');
     },
   });
 };

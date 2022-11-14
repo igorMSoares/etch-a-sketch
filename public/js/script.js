@@ -563,11 +563,11 @@ const initToggleInstructionsHandler = () => {
   removeOutlineOnClick(toggler);
   initKeydownEvent(toggler);
 
-  jsCssAnimations.init.collapse({
+  jsCssAnimations.init.fade({
     toggleBtn: '.toggle-instructions',
-    // staggerDelay: '0.8s',
-    // widthTransition: false,
-    // heightTransition: false,
+    duration: 500,
+    staggerDelay: 150,
+    fillMode: 'backwards',
     start: () => {
       const rotateClass = [...toggler.classList].find(c => c.match(/rotate/));
       if (!rotateClass || rotateClass.match('rotate-up')) {

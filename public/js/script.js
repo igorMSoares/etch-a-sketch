@@ -79,7 +79,7 @@ const showColorPicker = () => {
   }
 };
 
-const displayMessage = (message, duration = 2000) => {
+const displayMessage = (message, duration = 1500) => {
   const msg = document.querySelector('.msg-area__text');
   document.getElementById('number-of-columns').disabled = true;
   document.getElementById('reset-canvas-btn').disabled = true;
@@ -304,15 +304,15 @@ const validateAndSetSquareSize = (size, squaresPerRow) => {
 
     inputField.classList.add('red-bg');
     displayMessage(
-      `${squaresPerRow} columns does not fit your screen :( we're using ${totalColumns} instead.`,
-      3500
+      `${squaresPerRow} columns does not fit your screen :( using ${totalColumns} instead.`,
+      1500
     );
 
     if (isMobile() && !/landscape/.test(screen.orientation.type)) {
       setTimeout(() => {
         displayMessage(
           'Try changing to landscape orientation to get more space for your canvas',
-          3500
+          1500
         );
       }, 4200);
     }

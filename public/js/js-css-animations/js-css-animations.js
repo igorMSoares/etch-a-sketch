@@ -114,7 +114,15 @@ const targetsStack = {};
 
 const animate = (element, action, id, opts = {}) => {
   disable(element);
-  const { animType, toggleBtn, start, complete, resetAfter, hide } = opts;
+  const {
+    animType,
+    toggleBtn,
+    start,
+    complete,
+    resetAfter,
+    hide,
+    overflowHidden = true,
+  } = opts;
   const { duration, delay } = getTotalAnimTime(element);
   const OPPOSITE_ACTION = Object.freeze({
     hide: 'show',
@@ -123,6 +131,11 @@ const animate = (element, action, id, opts = {}) => {
     moveBack: 'move',
   });
   let parentMeasures, dimension, currentTransition;
+  const defaultDuration = getTimeInMs(
+    getComputedStyle(document.documentElement).getPropertyValue(
+      PROPERTY_NAMES.duration
+    )
+  );
 
   if (toggleBtn) {
     if (!targetsStack[toggleBtn]) targetsStack[toggleBtn] = [];
@@ -140,6 +153,7 @@ const animate = (element, action, id, opts = {}) => {
       action,
       widthTransition,
       heightTransition,
+      overflowHidden,
     }));
   } else if (isMotion(animType)) {
     currentTransition = getCurrentTransition(element);
@@ -199,15 +213,11 @@ const animate = (element, action, id, opts = {}) => {
             delete CALLBACK_TRACKER.executing[toggleBtn];
           }, delay);
       targetsStack[toggleBtn].forEach(el => enable(el));
+      targetsStack[toggleBtn] = [];
     } else if (!toggleBtn) {
       enable(element);
     }
 
-    const defaultDuration = getTimeInMs(
-      getComputedStyle(document.documentElement).getPropertyValue(
-        PROPERTY_NAMES.duration
-      )
-    );
     setTimeout(() => {
       if (resetAfter) removeCustomCssProperties(element);
     }, defaultDuration);
@@ -335,6 +345,7 @@ const jsCssAnimations = (function () {
             start,
             complete,
             hide,
+            overflowHidden,
             widthTransition = true,
             heightTransition = true,
             resetAfter = true,
@@ -358,6 +369,7 @@ const jsCssAnimations = (function () {
                 heightTransition,
                 hide,
                 resetAfter,
+                overflowHidden,
               });
           });
         };

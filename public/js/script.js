@@ -86,9 +86,11 @@ const displayMessage = (message, duration = 2000) => {
   msg.innerText = message;
 
   jsCssAnimations.show.slideDown(msg, {
+    overflowHidden: false,
     complete: () => {
       setTimeout(() => {
         jsCssAnimations.hide.slideUp(msg, {
+          overflowHidden: false,
           complete: () => {
             msg.innerHTML = '';
             document.getElementById('number-of-columns').disabled = false;

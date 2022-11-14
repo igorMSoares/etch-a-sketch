@@ -55,7 +55,7 @@ const initParentTransitions = args => {
   const parentMeasures = getParentMeasures(element);
   const dimension = getDimension(widthTransition, heightTransition);
   setParentCssProperties(element);
-  setOverflowHidden(element.parentElement);
+  if (args.overflowHidden) setOverflowHidden(element.parentElement);
   setParentMaxMeasures({
     element,
     parentMeasures,

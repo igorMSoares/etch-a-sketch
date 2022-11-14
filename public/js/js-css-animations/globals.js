@@ -36,7 +36,7 @@ export const CLASS_NAMES = Object.freeze({
   btnCursor: 'js-anim--btn-cursor',
   collapsed: 'js-anim--collapsed',
   hidden: 'js-anim--hidden',
-  rotated: 'js-anim--rotated',
+  moved: 'js-anim--moved',
   hide: [
     'js-anim--collapse',
     'js-anim--slide-up',

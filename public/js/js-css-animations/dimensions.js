@@ -42,11 +42,20 @@ const getDimension = (wTransit, hTransit) => {
   return dimension;
 };
 
+const setOverflowHidden = el => {
+  el.style.setProperty('overflow', 'hidden');
+};
+
+const removeOverflowHidden = el => {
+  el.style.removeProperty('overflow');
+};
+
 const initParentTransitions = args => {
   const { element, action, widthTransition, heightTransition } = args;
   const parentMeasures = getParentMeasures(element);
   const dimension = getDimension(widthTransition, heightTransition);
   setParentCssProperties(element);
+  setOverflowHidden(element.parentElement);
   setParentMaxMeasures({
     element,
     parentMeasures,
@@ -74,6 +83,7 @@ const endVisibilityToggle = (element, action, hide) => {
   removeDimensionMax(element.parentElement, 'height');
   removeDimensionMax(element.parentElement, 'width');
   removeCustomCssProperties(element.parentElement);
+  removeOverflowHidden(element.parentElement);
 };
 
 export { initParentTransitions, handleVisibilityToggle, endVisibilityToggle };

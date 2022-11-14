@@ -565,22 +565,24 @@ const initToggleInstructionsHandler = () => {
 
   jsCssAnimations.init.collapse({
     toggleBtn: '.toggle-instructions',
-    duration: '1s',
     start: () => {
-      const instructArea = document.getElementById('instructions');
       const rotateClass = [...toggler.classList].find(c => c.match(/rotate/));
-      if (!rotateClass || rotateClass === 'rotate-up') {
-        toggler.classList.add('rotate-down');
-        setTimeout(() => {
-          instructArea.classList.add('instructions-area__collapsed');
-        }, 500);
+      if (!rotateClass || rotateClass.match('rotate-up')) {
+        jsCssAnimations.rotateDown(toggler, {
+          resetAfter: false,
+        });
       } else {
-        toggler.classList.add('rotate-up');
-        setTimeout(() => {
-          instructArea.classList.remove('instructions-area__collapsed');
-        }, 500);
+        jsCssAnimations.rotateUp(toggler, { resetAfter: false });
       }
-      if (rotateClass) toggler.classList.remove(rotateClass);
+    },
+    complete: () => {
+      const instructArea = document.getElementById('instructions');
+      const opacity = getComputedStyle(
+        document.getElementById('instructions-content')
+      ).opacity;
+      opacity > 0.8
+        ? instructArea.classList.remove('instructions-area__collapsed')
+        : instructArea.classList.add('instructions-area__collapsed');
     },
   });
 };

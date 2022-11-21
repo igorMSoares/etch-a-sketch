@@ -39,43 +39,33 @@ const isMobile = () => {
   );
 };
 
-const hideColorPicker = () => {
+const toggleColorPicker = () => {
   const colorPicker = document.getElementById('color-picker');
   const checkBoxes = document.querySelectorAll('#mode-selection input');
-  if (getComputedStyle(colorPicker).opacity === '1') {
-    jsCssAnimations.hide.slideUp(colorPicker, {
-      duration: 350,
-      timingFunction: 'ease-in-out',
-      heightTransition: false,
-      widthTransition: false,
-      hide: true,
-      start: () => {
-        checkBoxes.forEach(inpt => (inpt.disabled = true));
-      },
-      complete: () => {
-        checkBoxes.forEach(inpt => (inpt.disabled = false));
-      },
-    });
+
+  jsCssAnimations.toggle(colorPicker, 'collapse', 'collapse', {
+    duration: 350,
+    timingFunction: 'ease-in-out',
+    keepSpace: true,
+    transfOrigin: 'center',
+    start: () => {
+      checkBoxes.forEach(inpt => (inpt.disabled = true));
+    },
+    complete: () => {
+      checkBoxes.forEach(inpt => (inpt.disabled = false));
+    },
+  });
+};
+
+const hideColorPicker = () => {
+  if (jsCssAnimations.isVisible(document.getElementById('color-picker'))) {
+    toggleColorPicker();
   }
 };
 
 const showColorPicker = () => {
-  const colorPicker = document.getElementById('color-picker');
-  const checkBoxes = document.querySelectorAll('#mode-selection input');
-  if (getComputedStyle(colorPicker).opacity === '0') {
-    jsCssAnimations.show.slideUp(colorPicker, {
-      duration: 300,
-      timingFunction: 'ease-in-out',
-      heightTransition: false,
-      widthTransition: false,
-      hide: true,
-      start: () => {
-        checkBoxes.forEach(inpt => (inpt.disabled = true));
-      },
-      complete: () => {
-        checkBoxes.forEach(inpt => (inpt.disabled = false));
-      },
-    });
+  if (jsCssAnimations.isHidden(document.getElementById('color-picker'))) {
+    toggleColorPicker();
   }
 };
 
@@ -566,19 +556,11 @@ const initToggleInstructionsHandler = () => {
   initKeydownEvent(toggler);
 
   jsCssAnimations.init.fade({
-    toggleBtn: '.toggle-instructions',
+    trigger: '.toggle-instructions',
     duration: 500,
     staggerDelay: 150,
-    fillMode: 'backwards',
     start: () => {
-      const rotateClass = [...toggler.classList].find(c => c.match(/rotate/));
-      if (!rotateClass || rotateClass.match('rotate-up')) {
-        jsCssAnimations.rotateDown(toggler, {
-          resetAfter: false,
-        });
-      } else {
-        jsCssAnimations.rotateUp(toggler, { resetAfter: false });
-      }
+      jsCssAnimations.toggle(toggler, 'rotateDown', 'rotateUp');
     },
     complete: () => {
       document
@@ -666,9 +648,7 @@ const initDownloadHandler = () => {
       root.style.removeProperty('cursor');
       document.querySelector('#download p').style.removeProperty('line-height');
       setTimeout(() => {
-        jsCssAnimations.show.slideUp(document.getElementById('download-icon'), {
-          action: 'show',
-        });
+        jsCssAnimations.show.slideUp(document.getElementById('download-icon'));
       }, 400);
       document.querySelector('#download p').innerText = boxContent;
     });

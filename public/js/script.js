@@ -497,6 +497,8 @@ const resetCanvas = () => {
       slideDown('color-picker');
     });
 
+    brush.mode = 'brush';
+    brush.isOn = false;
     canvas.style.removeProperty('height');
     canvas.style.removeProperty('width');
     renderCanvas(columns);

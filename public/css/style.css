@@ -13,44 +13,11 @@
   --slide-duration: 800ms;
 }
 
-@keyframes slideDown {
-  from {
-    opacity: 0;
-    transform: translateY(-100%);
-  }
-  to {
-    opacity: 1;
-    transform: translateY(0);
-  }
-}
-
-.slideDown {
-  animation: var(--slide-duration) slideDown ease;
-  animation-fill-mode: forwards;
-}
-
-@keyframes slideUp {
-  from {
-    opacity: 1;
-    transform: translateY(0);
-  }
-  to {
-    opacity: 0;
-    transform: translateY(-100%);
-  }
-}
-
-.slideUp {
-  animation: var(--slide-duration) slideUp ease;
-  animation-fill-mode: forwards;
-}
-
 #msg-area {
   width: clamp(300px, 100%, 500px);
   margin: 0 auto;
   font-weight: 700;
   color: hsl(0, 66%, 46%);
-  transition: 500ms max-height cubic-bezier(0, 1, 0, 1);
 }
 
 * {
@@ -118,13 +85,14 @@ header {
   background-color: hsla(39, 42%, 76%, 0.57);
 }
 
-#instructions {
+.instructions-area {
   position: relative;
+  margin: 0 auto;
   margin-top: 1.25rem;
   transition: 500ms margin ease;
 }
 
-#instructions h3 {
+.instructions__header {
   margin-top: 0.5em;
 }
 
@@ -141,8 +109,6 @@ header {
 .toggle-instructions {
   width: 0.5em;
   height: 0.5em;
-  cursor: pointer;
-  transition: 200ms transform ease;
 }
 
 #download {
@@ -217,6 +183,10 @@ p {
   font-size: 1.5rem;
 }
 
+.msg-area__text {
+  margin-top: 1.5em;
+}
+
 .columns-input {
   cursor: pointer;
   width: clamp(2.5rem, 8%, 3.5rem);
@@ -236,15 +206,19 @@ p {
   box-shadow: 0 0 0.5rem var(--bg-shadow), inset 0 0 0.25rem var(--bg-shadow);
 }
 
-.columns-input:focus {
+.columns-input:focus,
+.columns-input:hover {
   outline-color: var(--inpt-border-color);
 }
 
-.columns-input:hover {
-  border-color: var(--inpt-border-color);
+.columns-input:disabled {
+  outline-color: var(--bg-shadow);
+  /* background-color: lightcoral; */
+  background-color: rgba(255, 0, 0, 0.34);
 }
 
 button {
+  opacity: 1;
   cursor: pointer;
   background-color: var(--lighter-bg-color);
   color: var(--font-color);
@@ -257,7 +231,7 @@ button {
   padding: 0.7em;
   padding-bottom: 0.5em;
   box-shadow: 0 0 0.5rem var(--bg-shadow);
-  transition: scale 200ms ease;
+  transition: scale 200ms ease, opacity 500ms ease-in-out;
   z-index: 1; /* Fix color-picker overlaying when random color mode on */
 }
 
@@ -275,6 +249,11 @@ button:active {
 button:focus,
 #download-icon:focus {
   outline-color: var(--inpt-border-color);
+}
+
+button:disabled {
+  background-color: var(--bg-shadow);
+  opacity: 0.75;
 }
 
 .color-mode-selector {
@@ -391,7 +370,7 @@ button:focus,
   background-color: hsl(var(--h-value), var(--s-value), var(--l-value));
 }
 
-#color-picker {
+.color-picker {
   display: flex;
   flex-wrap: wrap;
   justify-content: center;
@@ -441,15 +420,13 @@ button:focus,
   display: none;
 }
 
-.no-margin-top {
-  margin-top: 0 !important;
-}
-
-.no-padding {
+.instructions-area__collapsed {
+  margin-top: 0.75em;
   padding: 0;
+  width: 50%;
 }
 
-.no-padding h3 {
+.instructions-area__collapsed .instructions__header {
   margin: 0;
 }
 

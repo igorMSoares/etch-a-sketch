@@ -1,0 +1,369 @@
+@keyframes js-anim--collapse {
+  from {
+    opacity: 1;
+    transform: scaleY(1);
+  }
+  to {
+    opacity: 0;
+    transform: scaleY(0);
+    transform-origin: var(--js-css-animation--transf-origin);
+  }
+}
+
+@keyframes js-anim--expand {
+  from {
+    opacity: 0;
+    transform: scaleY(0);
+    transform-origin: var(--js-css-animation--transf-origin);
+  }
+  to {
+    opacity: 1;
+    transform: scaleY(1);
+  }
+}
+
+@keyframes js-anim--slide-left {
+  from {
+    opacity: 1;
+    transform: translateX(0);
+  }
+  to {
+    opacity: 0;
+    transform: translateX(-100%);
+  }
+}
+
+@keyframes js-anim--slide-left__back {
+  from {
+    opacity: 0;
+    transform: translateX(-100%);
+  }
+  to {
+    opacity: 1;
+    transform: translateX(0);
+  }
+}
+
+@keyframes js-anim--slide-right {
+  from {
+    opacity: 1;
+    transform: translateX(0);
+  }
+  to {
+    opacity: 0;
+    transform: translateX(100%);
+  }
+}
+
+@keyframes js-anim--slide-right__back {
+  from {
+    opacity: 0;
+    transform: translateX(100%);
+  }
+  to {
+    opacity: 1;
+    transform: translateX(0);
+  }
+}
+
+@keyframes js-anim--slide-up {
+  from {
+    opacity: 1;
+    transform: translateY(0);
+  }
+  to {
+    opacity: 0;
+    transform: translateY(-100%);
+  }
+}
+
+@keyframes js-anim--slide-up__back {
+  from {
+    opacity: 0;
+    transform: translateY(-100%);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes js-anim--slide-down {
+  from {
+    opacity: 1;
+    transform: translateY(0);
+  }
+  to {
+    opacity: 0;
+    transform: translateY(100%);
+  }
+}
+
+@keyframes js-anim--slide-down__back {
+  from {
+    opacity: 0;
+    transform: translateY(100%);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes js-anim--fade-out {
+  from {
+    opacity: 1;
+    filter: blur(0);
+  }
+  to {
+    opacity: 0;
+    filter: blur(var(--js-css-animation--blur));
+  }
+}
+
+@keyframes js-anim--fade-in {
+  from {
+    opacity: 0;
+    filter: blur(var(--js-css-animation--blur));
+  }
+  to {
+    opacity: 1;
+    filter: blur(0);
+  }
+}
+
+@keyframes js-anim--rotation-loop {
+  to {
+    transform: rotate(var(--js-css-animation--rotation-angle));
+    transform-origin: var(--js-css-animation--transf-origin);
+  }
+}
+
+@keyframes js-anim--scale {
+  from {
+    transform: scale(var(--js-css-animation--initial-scale));
+  }
+  to {
+    transform: scale(var(--js-css-animation--final-scale));
+  }
+}
+
+@keyframes js-anim--scale__back {
+  from {
+    transform: scale(var(--js-css-animation--final-scale));
+  }
+  to {
+    transform: scale(var(--js-css-animation--initial-scale));
+  }
+}
+
+:root {
+  --js-css-animation--duration: 800ms;
+  --js-css-animation--timing-function: cubic-bezier(0.455, 0.03, 0.515, 0.955);
+  --js-css-animation--delay: 0ms;
+  --js-css-animation--fill-mode: both;
+  --js-css-animation--blur: 0.5px;
+  --js-css-animation--direction: normal;
+  --js-css-animation--iteration: 1;
+}
+
+.js-anim--dimensions-transitions {
+  transition-property: max-width, max-height;
+  transition-duration: var(--js-css-animation--duration);
+  transition-timing-function: var(--js-css-animation--timing-function);
+  transition-delay: var(--js-css-animation--delay);
+}
+
+.js-anim--width-transition {
+  transition: max-width var(--js-css-animation--duration)
+    var(--js-css-animation--timing-function) var(--js-css-animation--delay);
+}
+
+.js-anim--height-transition {
+  transition: max-height var(--js-css-animation--duration)
+    var(--js-css-animation--timing-function) var(--js-css-animation--delay);
+}
+
+.js-anim--collapse,
+.js-anim--expand,
+.js-anim--slide-up,
+.js-anim--slide-up__back,
+.js-anim--slide-down,
+.js-anim--slide-down__back,
+.js-anim--slide-left,
+.js-anim--slide-left__back,
+.js-anim--slide-right,
+.js-anim--slide-right__back,
+.js-anim--fade-in,
+.js-anim--fade-out,
+.js-anim--rotation-loop,
+.js-anim--scale,
+.js-anim--scale__back {
+  animation-duration: var(--js-css-animation--duration);
+  animation-timing-function: var(--js-css-animation--timing-function);
+  animation-delay: var(--js-css-animation--delay);
+  animation-fill-mode: var(--js-css-animation--fill-mode);
+  animation-direction: var(--js-css-animation--direction);
+  animation-iteration-count: var(--js-css-animation--iteration);
+}
+
+.js-anim--rotate-up,
+.js-anim--rotate-up__ccw,
+.js-anim--rotate-right,
+.js-anim--rotate-right__ccw,
+.js-anim--rotate-down,
+.js-anim--rotate-down__ccw,
+.js-anim--rotate-left,
+.js-anim--rotate-left__ccw,
+.js-anim--rotate {
+  --js-css-animation--transf-origin: 'center';
+  transform: rotate(var(--js-css-animation--rotation-angle));
+  transform-origin: var(--js-css-animation--transf-origin);
+  transition-property: transform;
+  transition-duration: var(--js-css-animation--duration);
+  transition-timing-function: var(--js-css-animation--timing-function);
+  transition-delay: var(--js-css-animation--delay);
+}
+
+.js-anim--rotate-up {
+  --js-css-animation--rotation-angle: 0deg;
+}
+
+.js-anim--rotate-up__ccw {
+  --js-css-animation--rotation-angle: -360deg;
+}
+
+.js-anim--rotate-up,
+.js-anim--rotate-right,
+.js-anim--rotate-down,
+.js-anim--rotate-left {
+  --js-css-animation--rotation-sign: 1;
+}
+
+.js-anim--rotate-up__ccw,
+.js-anim--rotate-right__ccw,
+.js-anim--rotate-down__ccw,
+.js-anim--rotate-left__ccw {
+  --js-css-animation--rotation-sign: -1;
+}
+
+.js-anim--rotate-right,
+.js-anim--rotate-left__ccw {
+  --js-css-animation--rotation-angle: calc(
+    90deg * var(--js-css-animation--rotation-sign)
+  );
+}
+
+.js-anim--rotate-down,
+.js-anim--rotate-down__ccw {
+  --js-css-animation--rotation-angle: calc(
+    180deg * var(--js-css-animation--rotation-sign)
+  );
+}
+
+.js-anim--rotate-left,
+.js-anim--rotate-right__ccw {
+  --js-css-animation--rotation-angle: calc(
+    270deg * var(--js-css-animation--rotation-sign)
+  );
+}
+
+.js-anim--rotation-loop {
+  --js-css-animation--rotation-angle: 0deg;
+  --js-css-animation--iteration: infinite;
+  --js-css-animation--direction: alternate;
+  --js-css-animation--transf-origin: 'center';
+  animation-name: js-anim--rotation-loop;
+}
+
+.js-anim--scale,
+.js-anim--scale__back {
+  --js-css-animation--transf-origin: 'center';
+  --js-css-animation--initial-scale: 1;
+  --js-css-animation--final-scale: 1;
+  transform-origin: var(--js-css-animation--transf-origin);
+}
+
+.js-anim--scale {
+  animation-name: js-anim--scale;
+}
+
+.js-anim--scale__back {
+  animation-name: js-anim--scale__back;
+}
+
+.js-anim--fade-out {
+  animation-name: js-anim--fade-out;
+}
+
+.js-anim--fade-in {
+  animation-name: js-anim--fade-in;
+}
+
+.js-anim--collapse,
+.js-anim--expand {
+  --js-css-animation--transf-origin: top center;
+}
+
+.js-anim--collapse {
+  animation-name: js-anim--collapse;
+}
+
+.js-anim--expand {
+  animation-name: js-anim--expand;
+}
+
+.js-anim--slide-up {
+  animation-name: js-anim--slide-up;
+}
+
+.js-anim--slide-up__back {
+  animation-name: js-anim--slide-up__back;
+}
+
+.js-anim--slide-down {
+  animation-name: js-anim--slide-down;
+}
+
+.js-anim--slide-down__back {
+  animation-name: js-anim--slide-down__back;
+}
+
+.js-anim--slide-left {
+  animation-name: js-anim--slide-left;
+}
+
+.js-anim--slide-left__back {
+  animation-name: js-anim--slide-left__back;
+}
+
+.js-anim--slide-right {
+  animation-name: js-anim--slide-right;
+}
+
+.js-anim--slide-right__back {
+  animation-name: js-anim--slide-right__back;
+}
+
+.js-anim--collapsed {
+  display: none;
+}
+
+.js-anim--hidden {
+  visibility: hidden;
+}
+
+.js-anim--btn-cursor {
+  --js-css-animation--cursor: pointer;
+  cursor: var(--js-css-animation--cursor);
+}
+
+.js-anim--overflow-hidden {
+  overflow: hidden;
+}
+
+@supports (overflow: clip) {
+  .js-anim--overflow-hidden {
+    overflow: clip;
+  }
+}

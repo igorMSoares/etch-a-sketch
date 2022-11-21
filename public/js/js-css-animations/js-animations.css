@@ -6,7 +6,7 @@
   to {
     opacity: 0;
     transform: scaleY(0);
-    transform-origin: center top;
+    transform-origin: var(--js-css-animation--transf-origin);
   }
 }
 
@@ -14,7 +14,7 @@
   from {
     opacity: 0;
     transform: scaleY(0);
-    transform-origin: center top;
+    transform-origin: var(--js-css-animation--transf-origin);
   }
   to {
     opacity: 1;
@@ -30,7 +30,6 @@
   to {
     opacity: 0;
     transform: translateX(-100%);
-    transform-origin: center top;
   }
 }
 
@@ -38,7 +37,6 @@
   from {
     opacity: 0;
     transform: translateX(-100%);
-    transform-origin: center top;
   }
   to {
     opacity: 1;
@@ -54,7 +52,6 @@
   to {
     opacity: 0;
     transform: translateX(100%);
-    transform-origin: center top;
   }
 }
 
@@ -62,7 +59,6 @@
   from {
     opacity: 0;
     transform: translateX(100%);
-    transform-origin: center top;
   }
   to {
     opacity: 1;
@@ -78,7 +74,6 @@
   to {
     opacity: 0;
     transform: translateY(-100%);
-    transform-origin: center top;
   }
 }
 
@@ -86,7 +81,6 @@
   from {
     opacity: 0;
     transform: translateY(-100%);
-    transform-origin: center top;
   }
   to {
     opacity: 1;
@@ -102,7 +96,6 @@
   to {
     opacity: 0;
     transform: translateY(100%);
-    transform-origin: center top;
   }
 }
 
@@ -110,7 +103,6 @@
   from {
     opacity: 0;
     transform: translateY(100%);
-    transform-origin: center top;
   }
   to {
     opacity: 1;
@@ -140,12 +132,39 @@
   }
 }
 
+@keyframes js-anim--rotation-loop {
+  to {
+    transform: rotate(var(--js-css-animation--rotation-angle));
+    transform-origin: var(--js-css-animation--transf-origin);
+  }
+}
+
+@keyframes js-anim--scale {
+  from {
+    transform: scale(var(--js-css-animation--initial-scale));
+  }
+  to {
+    transform: scale(var(--js-css-animation--final-scale));
+  }
+}
+
+@keyframes js-anim--scale__back {
+  from {
+    transform: scale(var(--js-css-animation--final-scale));
+  }
+  to {
+    transform: scale(var(--js-css-animation--initial-scale));
+  }
+}
+
 :root {
   --js-css-animation--duration: 800ms;
   --js-css-animation--timing-function: cubic-bezier(0.455, 0.03, 0.515, 0.955);
   --js-css-animation--delay: 0ms;
-  --js-css-animation--fill-mode: forwards;
+  --js-css-animation--fill-mode: both;
   --js-css-animation--blur: 0.5px;
+  --js-css-animation--direction: normal;
+  --js-css-animation--iteration: 1;
 }
 
 .js-anim--dimensions-transitions {
@@ -176,11 +195,16 @@
 .js-anim--slide-right,
 .js-anim--slide-right__back,
 .js-anim--fade-in,
-.js-anim--fade-out {
+.js-anim--fade-out,
+.js-anim--rotation-loop,
+.js-anim--scale,
+.js-anim--scale__back {
   animation-duration: var(--js-css-animation--duration);
   animation-timing-function: var(--js-css-animation--timing-function);
   animation-delay: var(--js-css-animation--delay);
   animation-fill-mode: var(--js-css-animation--fill-mode);
+  animation-direction: var(--js-css-animation--direction);
+  animation-iteration-count: var(--js-css-animation--iteration);
 }
 
 .js-anim--rotate-up,
@@ -190,8 +214,11 @@
 .js-anim--rotate-down,
 .js-anim--rotate-down__ccw,
 .js-anim--rotate-left,
-.js-anim--rotate-left__ccw {
-  transform: rotate(var(--js-css-animation--rotation-deg));
+.js-anim--rotate-left__ccw,
+.js-anim--rotate {
+  --js-css-animation--transf-origin: 'center';
+  transform: rotate(var(--js-css-animation--rotation-angle));
+  transform-origin: var(--js-css-animation--transf-origin);
   transition-property: transform;
   transition-duration: var(--js-css-animation--duration);
   transition-timing-function: var(--js-css-animation--timing-function);
@@ -199,11 +226,11 @@
 }
 
 .js-anim--rotate-up {
-  --js-css-animation--rotation-deg: 0deg;
+  --js-css-animation--rotation-angle: 0deg;
 }
 
 .js-anim--rotate-up__ccw {
-  --js-css-animation--rotation-deg: -360deg;
+  --js-css-animation--rotation-angle: -360deg;
 }
 
 .js-anim--rotate-up,
@@ -222,23 +249,47 @@
 
 .js-anim--rotate-right,
 .js-anim--rotate-left__ccw {
-  --js-css-animation--rotation-deg: calc(
+  --js-css-animation--rotation-angle: calc(
     90deg * var(--js-css-animation--rotation-sign)
   );
 }
 
 .js-anim--rotate-down,
 .js-anim--rotate-down__ccw {
-  --js-css-animation--rotation-deg: calc(
+  --js-css-animation--rotation-angle: calc(
     180deg * var(--js-css-animation--rotation-sign)
   );
 }
 
 .js-anim--rotate-left,
 .js-anim--rotate-right__ccw {
-  --js-css-animation--rotation-deg: calc(
+  --js-css-animation--rotation-angle: calc(
     270deg * var(--js-css-animation--rotation-sign)
   );
+}
+
+.js-anim--rotation-loop {
+  --js-css-animation--rotation-angle: 0deg;
+  --js-css-animation--iteration: infinite;
+  --js-css-animation--direction: alternate;
+  --js-css-animation--transf-origin: 'center';
+  animation-name: js-anim--rotation-loop;
+}
+
+.js-anim--scale,
+.js-anim--scale__back {
+  --js-css-animation--transf-origin: 'center';
+  --js-css-animation--initial-scale: 1;
+  --js-css-animation--final-scale: 1;
+  transform-origin: var(--js-css-animation--transf-origin);
+}
+
+.js-anim--scale {
+  animation-name: js-anim--scale;
+}
+
+.js-anim--scale__back {
+  animation-name: js-anim--scale__back;
 }
 
 .js-anim--fade-out {
@@ -247,6 +298,11 @@
 
 .js-anim--fade-in {
   animation-name: js-anim--fade-in;
+}
+
+.js-anim--collapse,
+.js-anim--expand {
+  --js-css-animation--transf-origin: top center;
 }
 
 .js-anim--collapse {
@@ -300,4 +356,14 @@
 .js-anim--btn-cursor {
   --js-css-animation--cursor: pointer;
   cursor: var(--js-css-animation--cursor);
+}
+
+.js-anim--overflow-hidden {
+  overflow: hidden;
+}
+
+@supports (overflow: clip) {
+  .js-anim--overflow-hidden {
+    overflow: clip;
+  }
 }

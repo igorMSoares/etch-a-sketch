@@ -1,3 +1,14 @@
+/**
+ * Handle element's width and height calculations
+ * so that, when an element's visibility changes,
+ * parent element's dimensions can be properly transitioned
+ * @module measurements
+ */
+
+/**
+ * Throws a ReferenceError if 'dimension' is neither 'width' nor 'height'
+ * @param {string} dimension - Either 'width' or 'height'
+ */
 const validateDimension = dimension => {
   if (dimension !== 'height' && dimension !== 'width') {
     throw new ReferenceError(
@@ -6,10 +17,21 @@ const validateDimension = dimension => {
   }
 };
 
+/**
+ * Returns only the numeric part of the margin property
+ * @param {string} margin - Margin value along with its unit
+ * @returns Margin value without unit
+ */
 const getMarginNumericValue = margin => {
-  return +margin.match(/[\d.]+/);
+  return +(margin.match(/[\d.]+/) ?? 0);
 };
 
+/**
+ * Calculates the total margin of an element in the vertical axis
+ * @param {string[]} margins - Array containing an element's margin values
+ * @param {number} arrLength - Number of values declared in the CSS margin property
+ * @returns The sum of top-margin and bottom-margin
+ */
 const getVertMargin = (margins, arrLength) => {
   let marginSize = 0;
   if ((arrLength === 1 || arrLength === 2) && margins[0] !== '0px') {
@@ -22,6 +44,12 @@ const getVertMargin = (margins, arrLength) => {
   return marginSize;
 };
 
+/**
+ * Calculates the total margin of an element in the horizontal axis
+ * @param {string[]} margins - Array containing an element's margin values
+ * @param {number} arrLength - Number of values declared in the CSS margin property
+ * @returns The sum of left-margin and right-margin
+ */
 const getHorizMargin = (margins, arrLength) => {
   let marginSize = 0;
   if (arrLength === 2 || arrLength === 3) {
@@ -34,11 +62,21 @@ const getHorizMargin = (margins, arrLength) => {
   return marginSize;
 };
 
+/**
+ * Element's total margin in a given axis
+ * @param {HTMLElement} element - The DOM element to calculate margins from
+ * @param {string} axis - 'horizontal' or 'vertical' margins
+ * @returns {number} Total margin in a given axis
+ */
 const getElementMargins = (element, axis) => {
   const calcMargins = {
     horizontal: getHorizMargin,
     vertical: getVertMargin,
   };
+  if (!(axis in calcMargins))
+    throw new ReferenceError(`
+    Invalid axis: ${axis}. Should be either 'horizontal' or 'vertical'
+  `);
 
   const margins = getComputedStyle(element).margin.split(' ');
   const arrLength = margins.length;
@@ -46,6 +84,12 @@ const getElementMargins = (element, axis) => {
   return calcMargins[axis](margins, arrLength);
 };
 
+/**
+ * Calculates the total width or height of an element
+ * @param {HTMLElement} element - The Dom element to measure
+ * @param {string} dimension - Either 'width' or 'height'
+ * @returns The total dimension of an element, including its margins
+ */
 const getElementMeasure = (element, dimension) => {
   validateDimension(dimension);
 
@@ -68,46 +112,92 @@ const getElementMeasure = (element, dimension) => {
   );
 };
 
-const getParentMeasure = (elem, dimension) => {
+/**
+ * Calculates the element's parent dimension before and after 'element' is set to 'display: none'
+ * @param {HTMLElement} element - The DOM element from which the parent will be measured
+ * @param {string} dimension - Either 'width' or 'height'
+ * @returns An object containing the parent element's dimension before and after the child element is set to 'display: none'
+ */
+const getParentMeasure = (element, dimension) => {
   validateDimension(dimension);
 
   const measure = {};
-  const parent = elem.parentElement;
+  const parent = element.parentElement;
 
   /** parent measurement before setting child to display: none */
   measure.before =
-    dimension === 'height' ? parent.offsetHeight : parent.offsetWidth;
-  if (getComputedStyle(elem).display === 'none') {
-    measure.before += getElementMeasure(elem, dimension);
+    dimension === 'height'
+      ? parent?.offsetHeight ?? 0
+      : parent?.offsetWidth ?? 0;
+  if (getComputedStyle(element).display === 'none') {
+    measure.before += getElementMeasure(element, dimension);
   }
 
-  elem.style.setProperty('display', 'none');
+  element.style.setProperty('display', 'none');
   /** parent measurement after setting child to display: none */
   measure.after =
-    dimension === 'height' ? parent.offsetHeight : parent.offsetWidth;
-  elem.style.removeProperty('display');
+    dimension === 'height'
+      ? parent?.offsetHeight ?? 0
+      : parent?.offsetWidth ?? 0;
+  element.style.removeProperty('display');
 
   return measure;
 };
 
-const getParentMeasures = elem => {
+/**
+ * Calculates the width and height of an element's parent,
+ * before and after the element is set to 'display: none'
+ * @param {HTMLElement} element - The DOM element to get the parent's measurements from
+ * @returns An object with the width and height of the parent element
+ */
+const getParentMeasures = element => {
   return {
-    height: getParentMeasure(elem, 'height'),
-    width: getParentMeasure(elem, 'width'),
+    height: getParentMeasure(element, 'height'),
+    width: getParentMeasure(element, 'width'),
   };
 };
 
+/** Tracks whether the parent's element measurement should be before or after the element is set to 'display: none' */
 const measured = {
   hide: { initial: 'before', final: 'after' },
   show: { initial: 'after', final: 'before' },
 };
 
-const setDimensionMax = (elem, dimension, value) =>
-  elem.style.setProperty(`max-${dimension}`, value);
+/**
+ * Sets the element's 'max-width' or 'max-height' CSS property
+ * @param {HTMLElement|null} element - The DOM element to set max-width or max-height value
+ * @param {string} dimension - Either 'width' or 'height'
+ * @param {string} value - The CSS property value, in pixels
+ */
+const setDimensionMax = (element, dimension, value) => {
+  validateDimension(dimension);
+  if (!element) throw new ReferenceError('element is null');
+  element.style.setProperty(`max-${dimension}`, value);
+};
 
-const removeDimensionMax = (elem, dimension) =>
-  elem.style.removeProperty(`max-${dimension}`);
+/**
+ * Removes the element's 'max-width' or 'max-height' CSS property
+ * @param {HTMLElement|null} element - The DOM element to set max-width or max-height value
+ * @param {string} dimension - Either 'width' or 'height'
+ */
+const removeDimensionMax = (element, dimension) => {
+  validateDimension(dimension);
+  if (!element) throw new ReferenceError('element is null');
+  element.style.removeProperty(`max-${dimension}`);
+};
 
+/**
+ * @typedef {Object} DimensionsMeasurements
+ * @property {{before: number, after: number}} height - Element's height before and after child element is set to 'display: none'
+ * @property {{before: number, after: number}} width - Element's width before and after child element is set to 'display: none'
+ */
+/**
+ * Sets element's parent's 'max-width' or 'max-height' property.
+ *
+ * If 'dimension' is undefined or different from 'all', 'width' or 'height',
+ * no property will be set.
+ * @param {{parentState: string, element: HTMLElement, parentMeasures: DimensionsMeasurements, action: string, dimension: string|undefined}} args - Object containing all the information needed
+ */
 const setParentMaxMeasures = args => {
   const {
     parentState = 'initial',

@@ -2,19 +2,19 @@
 
 I developed this project to practice front end skills and to deepen my knowledge of CSS and Javascript, as a part of [The Odin Project](www.theodinproject.com)'s Foundations Course. 🤓
 
-Try it out here 👉🏾 [Etch-a-Sketch](https://iguhsoares.github.io/etch-a-sketch/) !
+Try it out here 👉🏾 [Etch-a-Sketch](https://igormsoares.github.io/etch-a-sketch/) !
 
 ## Overview
 
 A web version of the awesome classical retro drawing toy (or tool? 🤔)
 
-![Demonstration gif](https://iguhsoares.github.io/public/gifs/etch-a-sketch/demo.gif)
+![Demonstration gif](https://igormsoares.github.io/public/gifs/etch-a-sketch/demo.gif)
 
 ### Color Modes
 
 You can choose between **13 different solid colors** and also experiment with **three color modes**
 
-![Color Modes Demo gif](https://iguhsoares.github.io/public/gifs/etch-a-sketch/color-modes.gif)
+![Color Modes Demo gif](https://igormsoares.github.io/public/gifs/etch-a-sketch/color-modes.gif)
 
 The **amount of squares** in the canvas can be customized, being limited to a maximum of **100 squares per row** (on large screens) or to the maximum possible number to fit your _screen width_ so the squares don't get too small nor the canvas overflows the screen.
 
@@ -22,19 +22,19 @@ The **amount of squares** in the canvas can be customized, being limited to a ma
 
 Want the squares in the canvas to be all together without any borders around? No problem! Just use the **Hide Grid** option
 
-![Hide Grid Demo gif](https://iguhsoares.github.io/public/gifs/etch-a-sketch/toggle-grid.gif)
+![Hide Grid Demo gif](https://igormsoares.github.io/public/gifs/etch-a-sketch/toggle-grid.gif)
 
 ### Share your artwork!
 
 And if you want to keep your drawing or share it with the world, just press the **download button** and your artwork will be saved as a _.jpeg_ image 😉
 
-![Download Demo gif](https://iguhsoares.github.io/public/gifs/etch-a-sketch/share.gif)
+![Download Demo gif](https://igormsoares.github.io/public/gifs/etch-a-sketch/share.gif)
 
 ### Responsive Layout
 
 You can use it on your personal computer or laptop but it will work equally nice on **mobile devices** as the layout and the canvas will adapt to all screens wider than _300 pixels_
 
-![Resizing Demo gif](https://iguhsoares.github.io/public/gifs/etch-a-sketch/resizing.gif)
+![Resizing Demo gif](https://igormsoares.github.io/public/gifs/etch-a-sketch/resizing.gif)
 
 ## Shoutout
 

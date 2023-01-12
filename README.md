@@ -14,8 +14,6 @@ A web version of the awesome classical retro drawing toy (or tool? 🤔)
 
 You can choose between **13 different solid colors** and also experiment with **three color modes**
 
-![Color Modes Demo gif](https://igormsoares.github.io/public/gifs/etch-a-sketch/color-modes.gif)
-
 The **amount of squares** in the canvas can be customized, being limited to a maximum of **100 squares per row** (on large screens) or to the maximum possible number to fit your _screen width_ so the squares don't get too small nor the canvas overflows the screen.
 
 ### Grid lines

@@ -439,7 +439,7 @@ const resetCanvas = () => {
     });
 
     brush.mode = 'brush';
-    brush.isOn = false;
+    if (!isMobile()) brush.isOn = false;
     canvas.style.removeProperty('height');
     canvas.style.removeProperty('width');
     renderCanvas(columns);

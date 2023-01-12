@@ -109,6 +109,8 @@ header {
 .toggle-instructions {
   width: 0.5em;
   height: 0.5em;
+  border-radius: 50%;
+  outline-offset: 2px;
 }
 
 #download {
@@ -159,6 +161,9 @@ footer p {
 
 .github-icon {
   width: 2rem;
+  height: 2rem;
+  border-radius: 50%;
+  outline-offset: -2px;
 }
 
 footer .divider {

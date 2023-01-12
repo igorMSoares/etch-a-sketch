@@ -543,18 +543,8 @@ const initChangeColorHandler = () => {
   });
 };
 
-const removeOutlineOnClick = element => {
-  element.addEventListener('click', e => {
-    e.target.style.setProperty('outline-style', 'none');
-  });
-  element.addEventListener('focusout', e => {
-    e.target.style.removeProperty('outline-style');
-  });
-};
-
 const initToggleInstructionsHandler = () => {
   const toggler = document.querySelector('.toggle-instructions');
-  removeOutlineOnClick(toggler);
   initKeydownEvent(toggler);
 
   jsCssAnimations.init.fade({

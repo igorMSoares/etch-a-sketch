@@ -26,9 +26,9 @@
         If you're into pixel art or perhaps just love coloring things around,
         come and let your artistic self flow in this pixelated canvas!
       </p>
-      <p class="divider"></p>
+      <p class="divider" aria-hidden="true"></p>
       <section id="instructions" class="instructions-area box">
-        <h3 class="instructions__header">
+        <h2 class="instructions__header">
           <span id="instructions-h" class="toggable">Instructions </span>
           <img
             class="toggle-instructions"
@@ -40,7 +40,7 @@
             role="button"
             aria-label="Hide or Show Instructions"
           />
-        </h3>
+        </h2>
         <article id="instructions-content" class="toggable">
           <p>
             Choose a color from the palette and
@@ -81,16 +81,12 @@
       </section>
     </header>
     <main>
-      <section
-        id="msg-area"
-        aria-label="Error Messages Area"
-        aria-live="assertive"
-      >
+      <div id="msg-area" aria-label="Error Messages Area" aria-live="assertive">
         <p class="msg-area__text"></p>
-      </section>
+      </div>
       <section id="reset-canvas" class="transition">
         <p>
-          Choose number of columns:
+          <label for="number-of-columns"> Choose number of columns: </label>
           <input
             type="text"
             name="number-of-columns"
@@ -114,9 +110,9 @@
       <section
         id="mode-selection"
         class="transition"
-        aria-label="Color Modes Options"
+        aria-label="Color Modes and Options"
       >
-        <p>
+        <fieldset class="mode-selection__options">
           <label for="erase-mode"
             >Erase
             <input
@@ -187,7 +183,7 @@
               aria-checked="false"
             ></span
           ></label>
-        </p>
+        </fieldset>
       </section>
       <section
         id="canvas"

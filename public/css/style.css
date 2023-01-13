@@ -271,7 +271,14 @@ button:disabled {
   display: none;
 }
 
-#mode-selection p {
+#mode-selection .mode-selection__options {
+  margin: 1em 0;
+  font-size: 1.5rem;
+  border: none;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-wrap: wrap;
   gap: clamp(0.75rem, 5%, 2.5rem);
   white-space: nowrap;
 }

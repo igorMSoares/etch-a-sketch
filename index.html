@@ -37,6 +37,8 @@
             alt="Toggle instructions"
             tabindex="0"
             target-selector=".toggable"
+            role="button"
+            aria-label="Hide or Show Instructions"
           />
         </h3>
         <article id="instructions-content" class="toggable">
@@ -61,7 +63,7 @@
             will generate a canvas with smaller pixels and vice versa.
           </p>
           <p>Have fun!</p>
-          <p class="divider"></p>
+          <p class="divider" aria-hidden="true"></p>
         </article>
       </section>
       <section id="download" class="box">
@@ -72,12 +74,20 @@
           title="Click to download your sketch"
           id="download-icon"
           tabindex="0"
+          role="button"
+          aria-label="Download Your Sketch"
         />
         <a id="download-link" href="#" style="display: none"></a>
       </section>
     </header>
     <main>
-      <section id="msg-area"><p class="msg-area__text"></p></section>
+      <section
+        id="msg-area"
+        aria-label="Error Messages Area"
+        aria-live="assertive"
+      >
+        <p class="msg-area__text"></p>
+      </section>
       <section id="reset-canvas" class="transition">
         <p>
           Choose number of columns:
@@ -95,9 +105,17 @@
         </p>
       </section>
       <div>
-        <section id="color-picker" class="color-picker transition"></section>
+        <section
+          id="color-picker"
+          class="color-picker transition"
+          aria-label="Colors Pallete"
+        ></section>
       </div>
-      <section id="mode-selection" class="transition">
+      <section
+        id="mode-selection"
+        class="transition"
+        aria-label="Color Modes Options"
+      >
         <p>
           <label for="erase-mode"
             >Erase
@@ -107,7 +125,12 @@
               name="mode-selector"
               id="erase-mode"
             />
-            <span class="color-mode-picker" tabindex="0"></span>
+            <span
+              class="color-mode-picker"
+              tabindex="0"
+              role="checkbox"
+              aria-checked="false"
+            ></span>
           </label>
           <label for="random-color-mode"
             >Random Colors
@@ -117,7 +140,12 @@
               name="mode-selector"
               id="random-color-mode"
             />
-            <span class="color-mode-picker" tabindex="0"></span>
+            <span
+              class="color-mode-picker"
+              tabindex="0"
+              role="checkbox"
+              aria-checked="false"
+            ></span>
           </label>
           <label for="progressive-darkening-mode"
             >Darken
@@ -126,7 +154,12 @@
               type="checkbox"
               name="mode-selector"
               id="progressive-darkening-mode" />
-            <span class="color-mode-picker" tabindex="0"></span></label
+            <span
+              class="color-mode-picker"
+              tabindex="0"
+              role="checkbox"
+              aria-checked="false"
+            ></span></label
           ><label for="progressive-lighten-mode"
             >Lighten
             <input
@@ -134,7 +167,12 @@
               type="checkbox"
               name="mode-selector"
               id="progressive-lighten-mode" />
-            <span class="color-mode-picker" tabindex="0"></span></label
+            <span
+              class="color-mode-picker"
+              tabindex="0"
+              role="checkbox"
+              aria-checked="false"
+            ></span></label
           ><label for="toggle-grid" id="grid-state"
             >Hide Grid
             <input
@@ -142,7 +180,12 @@
               type="checkbox"
               name="toggle-grid"
               id="toggle-grid" />
-            <span class="color-mode-picker" tabindex="0"></span
+            <span
+              class="color-mode-picker"
+              tabindex="0"
+              role="checkbox"
+              aria-checked="false"
+            ></span
           ></label>
         </p>
       </section>
@@ -151,6 +194,8 @@
         class="grid"
         title="Click to start coloring"
         tabindex="0"
+        aria-label="Canvas Area"
+        aria-description="Drawing Canvas. Can only be interacted via mouselike devices or touchscreen."
       ></section>
     </main>
     <footer>

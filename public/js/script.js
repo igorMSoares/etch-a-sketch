@@ -208,6 +208,7 @@ const renderColorPicker = () => {
     span = document.createElement('span');
     span.classList.add('color');
     span.setAttribute('tabindex', '0');
+    span.setAttribute('role', 'button');
 
     hValue = 30 * i;
     if (i === 12) {
@@ -434,7 +435,9 @@ const resetCanvas = () => {
   } else {
     document.querySelectorAll('.color-mode-selector').forEach(box => {
       box.checked = false;
+      box.nextElementSibling.ariaChecked = false;
       box.disabled = false;
+      box.nextElementSibling.classList.remove('disabled-cbox');
       showColorPicker();
     });
 
@@ -469,6 +472,7 @@ const initColorModeHandler = mode => {
   };
 
   document.getElementById(mode).onchange = e => {
+    e.target.nextElementSibling.ariaChecked = e.target.checked;
     if (e.target.id === 'toggle-grid') {
       toggleState('grid-state', setGridState);
     } else {
@@ -479,6 +483,7 @@ const initColorModeHandler = mode => {
             cb.nextElementSibling.classList.add('disabled-cbox');
             if (cb.id === 'erase-mode' && cb.checked) brush.mode = 'brush';
             cb.checked = false;
+            cb.nextElementSibling.ariaChecked = cb.checked;
           }
         });
 

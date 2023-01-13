@@ -203,12 +203,28 @@ const renderColorPicker = () => {
   let span;
   let hValue;
   let lValue = 46;
+  const colorName = [
+    'Red',
+    'Orange',
+    'Yellow',
+    'Lime Green',
+    'Green',
+    'Emerald Green',
+    'Turquoise',
+    'Blue',
+    'Navy Blue',
+    'Purple',
+    'Lilac',
+    'Pink',
+    'Black',
+  ];
 
   for (let i = 0; i < 13; i++) {
     span = document.createElement('span');
     span.classList.add('color');
     span.setAttribute('tabindex', '0');
     span.setAttribute('role', 'button');
+    span.setAttribute('aria-label', colorName[i]);
 
     hValue = 30 * i;
     if (i === 12) {

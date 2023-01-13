@@ -81,8 +81,13 @@
       </section>
     </header>
     <main>
-      <div id="msg-area" aria-label="Error Messages Area" aria-live="assertive">
-        <p class="msg-area__text"></p>
+      <div id="msg-area">
+        <p
+          class="msg-area__text"
+          aria-label="Error Messages Area"
+          role="alert"
+          aria-live="assertive"
+        ></p>
       </div>
       <section id="reset-canvas" class="transition">
         <p>
@@ -113,7 +118,7 @@
         aria-label="Color Modes and Options"
       >
         <div class="mode-selection__options" aria-labelledby="mode-selection">
-          <label for="erase-mode"
+          <label id="erase-mode__label" for="erase-mode"
             >Erase
             <input
               class="color-mode-selector"
@@ -125,10 +130,11 @@
               class="color-mode-picker"
               tabindex="0"
               role="checkbox"
+              aria-labelledby="erase-mode__label"
               aria-checked="false"
             ></span>
           </label>
-          <label for="random-color-mode"
+          <label id="random-color-mode__label" for="random-color-mode"
             >Random Colors
             <input
               class="color-mode-selector"
@@ -140,10 +146,13 @@
               class="color-mode-picker"
               tabindex="0"
               role="checkbox"
+              aria-labelledby="random-color-mode__label"
               aria-checked="false"
             ></span>
           </label>
-          <label for="progressive-darkening-mode"
+          <label
+            id="progressive-darkening-mode__label"
+            for="progressive-darkening-mode"
             >Darken
             <input
               class="color-mode-selector"
@@ -154,9 +163,12 @@
               class="color-mode-picker"
               tabindex="0"
               role="checkbox"
+              aria-labelledby="progressive-darkening-mode__label"
               aria-checked="false"
             ></span></label
-          ><label for="progressive-lighten-mode"
+          ><label
+            id="progressive-lighten-mode__label"
+            for="progressive-lighten-mode"
             >Lighten
             <input
               class="color-mode-selector"
@@ -167,9 +179,10 @@
               class="color-mode-picker"
               tabindex="0"
               role="checkbox"
+              aria-labelledby="progressive-lighten-mode__label"
               aria-checked="false"
             ></span></label
-          ><label for="toggle-grid" id="grid-state"
+          ><label id="toggle-grid__label" for="toggle-grid" id="grid-state"
             >Hide Grid
             <input
               class="color-mode-selector"
@@ -180,6 +193,7 @@
               class="color-mode-picker"
               tabindex="0"
               role="checkbox"
+              aria-labelledby="toggle-grid__label"
               aria-checked="false"
             ></span
           ></label>
@@ -190,8 +204,7 @@
         class="grid"
         title="Click to start coloring"
         tabindex="0"
-        aria-label="Canvas Area"
-        aria-description="Drawing Canvas. Can only be interacted via mouselike devices or touchscreen."
+        aria-label="Drawing Area. Can only be interacted via mouselike devices or touchscreen."
       ></section>
     </main>
     <footer>

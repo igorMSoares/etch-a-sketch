@@ -30,12 +30,26 @@
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <link
       href="https://fonts.googleapis.com/css2?family=Fuzzy+Bubbles:wght@400;700&display=swap"
+      rel="preload"
+      as="style"
+    />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Fuzzy+Bubbles:wght@400;700&display=swap"
       rel="stylesheet"
+      media="print"
+      onload="this.onload=null;this.removeAttribute('media')"
       data-html2canvas-ignore
+    />
+    <link
+      rel="preload"
+      as="style"
+      href="./public/js/js-css-animations/js-animations.css"
     />
     <link
       rel="stylesheet"
       href="./public/js/js-css-animations/js-animations.css"
+      media="print"
+      onload="this.onload=null;this.removeAttribute('media')"
       data-html2canvas-ignore
     />
     <link
@@ -43,7 +57,13 @@
       href="./public/css/style.css"
       data-html2canvas-ignore
     />
-    <link rel="stylesheet" href="./public/css/canvas.css" />
+    <link rel="preload" as="style" href="./public/css/canvas.css" />
+    <link
+      rel="stylesheet"
+      href="./public/css/canvas.css"
+      media="print"
+      onload="this.onload=null;this.removeAttribute('media')"
+    />
     <script src="./public/js/script.js" type="module"></script>
     <title>Etch-a-Sketch App</title>
   </head>
@@ -59,6 +79,8 @@
         <h2 class="instructions__header">
           <span id="instructions-h" class="toggable">Instructions </span>
           <img
+            width="16"
+            height="16"
             class="toggle-instructions"
             title="Click to hide/show the instructions"
             src="./public/img/arrows-up.png"
@@ -77,15 +99,12 @@
             again to turn off the brush.
           </p>
           <p>You can also experiment with <b>different color modes:</b></p>
-          <ul>
-            <li>
-              Use <strong>Random Colors</strong> for a psychedelic multicolored
-              effect,
-            </li>
-            <li>incrementally <strong>Darken</strong> the selected color or</li>
-            <li>choose <strong>Ligthen</strong> to get the opposite effect.</li>
-          </ul>
-
+          <p>
+            Use <strong>Random Colors</strong> for a psychedelic multicolored
+            effect,
+          </p>
+          <p>incrementally <strong>Darken</strong> the selected color or</p>
+          <p>choose <strong>Ligthen</strong> to get the opposite effect.</p>
           <p>
             If you want to
             <b>change the size of the pixels,</b> a greater number of columns
@@ -98,6 +117,8 @@
       <section id="download" class="box">
         <p>Share your artwork:</p>
         <img
+          width="32"
+          height="32"
           src="./public/img/download-icon.png"
           alt="Click to download your sketch"
           title="Click to download your sketch"
@@ -246,6 +267,8 @@
           href="https://github.com/igormsoares"
         >
           <img
+            width="32"
+            height="32"
             src="./public/img/github-icon.png"
             alt="GitHub icon"
             title="Check my other projects on GitHub!"

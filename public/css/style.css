@@ -102,8 +102,7 @@ header {
   margin-top: 0.5em;
 }
 
-#instructions p,
-#instructions ul {
+#instructions p {
   font-size: 1.25rem;
   line-height: 1.5em;
 }

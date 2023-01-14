@@ -40,7 +40,8 @@ html {
 
 body {
   background-color: var(--bg-color);
-  font-family: 'Fuzzy Bubbles', 'Comic Sans MS';
+  font-family: 'Fuzzy Bubbles', 'Comic Sans MS', 'Segoe Script',
+    'Lucida Handwriting', cursive;
   text-align: center;
   color: var(--font-color);
   padding: 1em;

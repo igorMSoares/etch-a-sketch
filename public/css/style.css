@@ -358,20 +358,6 @@ button:disabled {
   background-color: lightcoral;
 }
 
-.rotate-up {
-  transform: rotate(-0deg);
-  transition: calc(var(--slide-duration) / 2) transform ease-in-out;
-}
-
-.rotate-down {
-  transform: rotate(180deg);
-  transition: calc(var(--slide-duration) / 2) transform ease-in-out;
-}
-
-.hidden {
-  display: none;
-}
-
 .instructions-area__collapsed {
   margin-top: 0.75em;
   padding: 0;

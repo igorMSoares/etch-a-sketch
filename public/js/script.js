@@ -33,6 +33,16 @@ const brush = {
   },
 };
 
+const loadScript = (src, id) =>
+  new Promise(resolve => {
+    const head = document.getElementsByTagName('head')[0];
+    const newScript = document.createElement('script');
+    newScript.id = id;
+    newScript.src = src;
+    head.appendChild(newScript);
+    newScript.addEventListener('load', _ => resolve(), { once: true });
+  });
+
 const isMobile = () => {
   return /Mobile|Android|iP(hone|od)|IEMobile|BlackBerry|Kindle|Silk-Accelerated|(hpw|web)OS|Opera M(obi|ini)/.test(
     navigator.userAgent
@@ -600,21 +610,13 @@ const initDownloadHandler = () => {
     };
   };
 
-  const boxContent = document.querySelector('#download p').innerText;
-  document.getElementById('download-icon').addEventListener('click', e => {
-    jsCssAnimations.hide.fade(e.target, { duration: 250 });
-    document
-      .querySelector('#download p')
-      .style.setProperty('line-height', 'normal');
-    const waitMsg = 'Preparing image for download... Please wait';
-    document.querySelector('#download p').innerText = waitMsg;
-    root.style.setProperty('cursor', 'wait');
+  const downloadCanvas = async (canvas, w, ratio) => {
+    const HTML2C_SCRIPT_ID = 'html2canvas-script';
+    const isLoaded = document.getElementById(HTML2C_SCRIPT_ID) ? true : false;
 
-    const maxSize = 850;
-    const size = canvasSize();
-    const ratio = getCanvasRatio(size.width, size.height);
-    const w =
-      size.greaterSide === 'width' ? maxSize : parseInt(maxSize / ratio);
+    if (!isLoaded) {
+      await loadScript('/public/js/html2canvas.min.js', HTML2C_SCRIPT_ID);
+    }
 
     html2canvas(canvas, {
       logging: false,
@@ -653,18 +655,48 @@ const initDownloadHandler = () => {
         }
       },
     }).then(canvas => {
-      const anchor = document.getElementById('download-link');
+      const anchor = document.createElement('a');
+      anchor.style.setProperty('display', 'none');
       anchor.setAttribute('href', canvas.toDataURL('image/jpeg'));
       anchor.setAttribute('download', 'sketch.jpg');
+      document.getElementById('download').appendChild(anchor);
       anchor.click();
+      document.getElementById('download').removeChild(anchor);
 
-      root.style.removeProperty('cursor');
-      document.querySelector('#download p').style.removeProperty('line-height');
       setTimeout(() => {
-        jsCssAnimations.show.slideUp(document.getElementById('download-icon'));
+        jsCssAnimations.show.slideUp(document.getElementById('download-icon'), {
+          keepSpace: true,
+          start: () => {
+            root.style.removeProperty('cursor');
+            downloadBoxText.style.removeProperty('line-height');
+            downloadBoxText.innerText = downloadBoxMsg;
+          },
+        });
       }, 400);
-      document.querySelector('#download p').innerText = boxContent;
     });
+  };
+
+  const downloadBoxText = document.querySelector('#download p');
+  const downloadBoxMsg = downloadBoxText.innerText;
+  document.getElementById('download-icon').addEventListener('click', e => {
+    jsCssAnimations.hide.fade(e.target, {
+      duration: 250,
+      keepSpace: true,
+      complete: () => {
+        downloadBoxText.style.setProperty('line-height', 'normal');
+        const waitMsg = 'Preparing image for download... Please wait';
+        downloadBoxText.innerText = waitMsg;
+        root.style.setProperty('cursor', 'wait');
+      },
+    });
+
+    const maxSize = 850;
+    const size = canvasSize();
+    const canvasRatio = getCanvasRatio(size.width, size.height);
+    const canvasWidth =
+      size.greaterSide === 'width' ? maxSize : parseInt(maxSize / ratio);
+
+    downloadCanvas(canvas, canvasWidth, canvasRatio);
   });
 
   initKeydownEvent(document.getElementById('download-icon'));

@@ -697,7 +697,7 @@ const initDownloadHandler = () => {
     const size = canvasSize();
     const canvasRatio = getCanvasRatio(size.width, size.height);
     const canvasWidth =
-      size.greaterSide === 'width' ? maxSize : parseInt(maxSize / ratio);
+      size.greaterSide === 'width' ? maxSize : parseInt(maxSize / canvasRatio);
 
     downloadCanvas(canvas, canvasWidth, canvasRatio);
   });

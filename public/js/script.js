@@ -615,7 +615,7 @@ const initDownloadHandler = () => {
     const isLoaded = document.getElementById(HTML2C_SCRIPT_ID) ? true : false;
 
     if (!isLoaded) {
-      await loadScript('/public/js/html2canvas.min.js', HTML2C_SCRIPT_ID);
+      await loadScript('./public/js/html2canvas.min.js', HTML2C_SCRIPT_ID);
     }
 
     html2canvas(canvas, {

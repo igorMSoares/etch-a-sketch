@@ -73,4 +73,4 @@ const setGradientBg = event => {
   }
 };
 
-export { setColorBg, setRandomBg, setGradientBg, resetBg };
+export { setColorBg, setRandomBg, setGradientBg, resetBg, findCornerClass };

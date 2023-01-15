@@ -263,7 +263,7 @@ const initDownloadHandler = () => {
     html2canvas(canvas, {
       logging: false,
       scale: ratio,
-      onclone: doc => {
+      onclone: async doc => {
         const r = doc.querySelector(':root');
 
         /** Resize squares so the final image doesn't get neither too small,
@@ -287,6 +287,7 @@ const initDownloadHandler = () => {
         }
 
         /** Removes round corners on generated image. */
+        const { findCornerClass } = await import('./color-modes.js');
         const corners = doc
           .getElementById('canvas')
           .getAttribute('corners')

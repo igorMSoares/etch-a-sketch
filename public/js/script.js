@@ -705,11 +705,51 @@ const initDownloadHandler = () => {
   initKeydownEvent(document.getElementById('download-icon'));
 };
 
+const loadCSS = (href, id) => {
+  const linkTag = document.createElement('link');
+  linkTag.id = id;
+  linkTag.rel = 'stylesheet';
+  linkTag.href = href;
+  document.getElementsByTagName('head')[0].appendChild(linkTag);
+};
+
+const lazyLoadCanvasCSS = (
+  thresholdElementsIds = ['reset-canvas', 'canvas'],
+  path = `${window.location.href}public/css/canvas.css`
+) => {
+  const CANVAS_CSS_LINK_ID = 'canvas-css--loaded';
+  const observer = new IntersectionObserver((entries, thisObserver) => {
+    entries.forEach(entry => {
+      if (entry.isIntersecting) {
+        const isLoaded = document.getElementById(CANVAS_CSS_LINK_ID)
+          ? true
+          : false;
+
+        if (!isLoaded) {
+          loadCSS(path, CANVAS_CSS_LINK_ID);
+        }
+
+        thresholdElementsIds.forEach(id => {
+          const thresholdElement = document.getElementById(id);
+          thisObserver.unobserve(thresholdElement);
+        });
+        return;
+      }
+    });
+  });
+
+  thresholdElementsIds.forEach(id => {
+    observer.observe(document.getElementById(id));
+  });
+};
+
 const start = squaresPerRow => {
   initToggleInstructionsHandler();
   initDownloadHandler();
 
+  lazyLoadCanvasCSS();
   renderCanvas(squaresPerRow);
+
   initResetCanvasHandlers();
   initChangeColorHandler();
   [

@@ -1,6 +1,7 @@
 import displayMessage from './message.js';
 import isMobile from './is-mobile.js';
-import brush from './brush.js';
+import { Brush } from './brush.js';
+import { setColorBg } from './color-modes.js';
 
 const root = document.querySelector(':root');
 
@@ -101,10 +102,8 @@ const renderGrid = async (squaresPerRow, totalRows, elementId = 'canvas') => {
       addRoundCorner(div, { columns: squaresPerRow, rows: totalRows });
     }
 
-    // const { default: brush } = await import('./brush.js');
-    const { setColorBg } = await import('./color-modes.js');
     div.onpointerenter = e => {
-      if (brush.isOn) setColorBg(e);
+      if (Brush.isOn) setColorBg(e);
     };
 
     if (isMobile()) {

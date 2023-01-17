@@ -1,5 +1,3 @@
-import brush from './brush.js';
-import isMobile from './is-mobile.js';
 import jsCssAnimations from './js-css-animations/js-css-animations.js';
 import {
   calculateSquareSize,
@@ -7,7 +5,6 @@ import {
   renderGrid,
 } from './render-grid.js';
 
-const SQUARES_PER_ROW = 30;
 const root = document.querySelector(':root');
 const canvas = document.getElementById('canvas');
 
@@ -144,12 +141,5 @@ const renderCanvas = squaresPerRow => {
     .getElementById('number-of-columns')
     .setAttribute('value', totalColumns);
 };
-
-// renderCanvas(SQUARES_PER_ROW);
-// if (!isMobile()) {
-//   canvas.addEventListener('click', () => {
-//     brush.state = brush.isOn ? 'off' : 'on';
-//   });
-// }
 
 export { renderCanvas, setGridState, hideColorPicker, showColorPicker };

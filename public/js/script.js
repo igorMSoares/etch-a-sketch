@@ -1,6 +1,6 @@
 import jsCssAnimations from './js-css-animations/js-css-animations.js';
 import isMobile from './is-mobile.js';
-import brush from './brush.js';
+import { Brush } from './brush.js';
 
 const canvas = document.getElementById('canvas');
 const root = document.querySelector(':root');
@@ -99,12 +99,12 @@ const resetCanvas = async () => {
       showColorPicker();
     });
 
-    brush.mode = 'brush';
-    if (!isMobile()) brush.isOn = false;
+    Brush.mode = 'brush';
+    if (!isMobile()) Brush.state = 'off';
     canvas.style.removeProperty('height');
     canvas.style.removeProperty('width');
     renderCanvas(columns);
-    brush.mode = 'brush';
+    Brush.mode = 'brush';
   }
 };
 
@@ -146,7 +146,7 @@ const initColorModeHandler = async mode => {
         modeSelector.forEach(cb => {
           if (cb !== e.target && cb.id !== 'toggle-grid') {
             cb.nextElementSibling.classList.add('disabled-cbox');
-            if (cb.id === 'erase-mode' && cb.checked) brush.mode = 'brush';
+            if (cb.id === 'erase-mode' && cb.checked) Brush.mode = 'brush';
             cb.checked = false;
             cb.nextElementSibling.ariaChecked = cb.checked;
           }
@@ -156,7 +156,7 @@ const initColorModeHandler = async mode => {
           ? hideColorPicker()
           : showColorPicker();
 
-        if (mode === 'erase-mode') brush.mode = 'eraser';
+        if (mode === 'erase-mode') Brush.mode = 'eraser';
 
         eventHandler = handler[mode];
       } else {
@@ -168,14 +168,14 @@ const initColorModeHandler = async mode => {
 
         if (mode === 'random-color-mode' || mode === 'erase-mode')
           showColorPicker();
-        if (mode === 'erase-mode') brush.mode = 'brush';
+        if (mode === 'erase-mode') Brush.mode = 'brush';
 
         eventHandler = handler.default;
       }
 
       document.querySelectorAll('.pixel').forEach(square => {
         square.onpointerenter = e => {
-          if (brush.isOn) eventHandler(e);
+          if (Brush.isOn) eventHandler(e);
         };
       });
     }
@@ -438,7 +438,7 @@ const start = () => {
     complete: () => {
       if (!isMobile()) {
         canvas.addEventListener('click', () => {
-          brush.state = brush.isOn ? 'off' : 'on';
+          Brush.state = Brush.isOn ? 'off' : 'on';
         });
       }
       initChangeColorHandler();
@@ -455,12 +455,9 @@ const start = () => {
   initResetCanvasHandlers();
 
   if (!isMobile()) {
-    // canvas.addEventListener('click', () => {
-    //   brush.state = brush.isOn ? 'off' : 'on';
-    // });
     window.onresize = resizeCanvas;
   } else {
-    brush.state = 'on';
+    Brush.state = 'on';
     screen.orientation.addEventListener('change', resizeCanvas);
   }
 };

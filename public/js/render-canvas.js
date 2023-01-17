@@ -33,7 +33,37 @@ const setGridState = state => {
   );
 };
 
+const preLoadCSS = href => {
+  const linkTag = document.createElement('link');
+  linkTag.rel = 'preload';
+  linkTag.as = 'style';
+  linkTag.href = href;
+  document.getElementsByTagName('head')[0].appendChild(linkTag);
+};
+
+const loadCSS = (href, id) => {
+  preLoadCSS(href);
+  const linkTag = document.createElement('link');
+  linkTag.id = id;
+  linkTag.rel = 'stylesheet';
+  linkTag.href = href;
+  document.getElementsByTagName('head')[0].appendChild(linkTag);
+};
+
+const loadCanvasCSS = (
+  path = `${window.location.href}public/css/canvas.css`
+) => {
+  const CANVAS_CSS_LINK_ID = 'canvas-css--loaded';
+
+  const isLoaded = document.getElementById(CANVAS_CSS_LINK_ID) ? true : false;
+
+  if (!isLoaded) {
+    loadCSS(path, CANVAS_CSS_LINK_ID);
+  }
+};
+
 const renderCanvas = squaresPerRow => {
+  loadCanvasCSS();
   canvas.innerHTML = '';
   document.getElementById('color-picker').innerHTML === ''
     ? renderColorPicker()

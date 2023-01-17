@@ -1,4 +1,3 @@
-import jsCssAnimations from './js-css-animations/js-css-animations.js';
 import isMobile from './is-mobile.js';
 import { Brush } from './brush.js';
 
@@ -181,6 +180,9 @@ const initChangeColorHandler = () => {
 };
 
 const initToggleInstructionsHandler = async () => {
+  const { default: jsCssAnimations } = await import(
+    './js-css-animations/js-css-animations.js'
+  );
   const toggler = document.querySelector('.toggle-instructions');
   initKeydownEvent(toggler);
 
@@ -273,7 +275,10 @@ const initDownloadHandler = () => {
       anchor.click();
       document.getElementById('download').removeChild(anchor);
 
-      setTimeout(() => {
+      setTimeout(async () => {
+        const { default: jsCssAnimations } = await import(
+          './js-css-animations/js-css-animations.js'
+        );
         jsCssAnimations.show.slideUp(document.getElementById('download-icon'), {
           keepSpace: true,
           start: () => {
@@ -291,6 +296,9 @@ const initDownloadHandler = () => {
   document
     .getElementById('download-icon')
     .addEventListener('click', async e => {
+      const { default: jsCssAnimations } = await import(
+        './js-css-animations/js-css-animations.js'
+      );
       jsCssAnimations.hide.fade(e.target, {
         duration: 250,
         keepSpace: true,

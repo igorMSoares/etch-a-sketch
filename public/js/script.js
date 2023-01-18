@@ -324,8 +324,9 @@ const initDownloadHandler = () => {
   initKeydownEvent(document.getElementById('download-icon'));
 };
 
-const lazyLoadRenderCanvas = (opts = {}) => {
+const lazyRenderCanvas = (opts = {}) => {
   const {
+    totalColumns = 30,
     thresholdElementsIds = ['reset-canvas', 'canvas'],
     complete = false,
   } = opts;
@@ -333,7 +334,7 @@ const lazyLoadRenderCanvas = (opts = {}) => {
     entries.some(async entry => {
       if (entry.isIntersecting) {
         const { renderCanvas } = await import('./render-canvas.js');
-        renderCanvas(30);
+        renderCanvas(totalColumns);
 
         thresholdElementsIds.forEach(id => {
           thisObserver.unobserve(document.getElementById(id));
@@ -354,7 +355,7 @@ const start = () => {
   initToggleInstructionsHandler();
   initDownloadHandler();
 
-  lazyLoadRenderCanvas({
+  lazyRenderCanvas({
     complete: () => {
       if (!isMobile()) {
         canvas.addEventListener('click', () => {

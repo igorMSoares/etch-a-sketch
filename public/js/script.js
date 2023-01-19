@@ -4,18 +4,6 @@ import { Brush } from './brush.js';
 const canvas = document.getElementById('canvas');
 const root = document.querySelector(':root');
 
-const loadScript = (src, id, opts = {}) =>
-  new Promise(resolve => {
-    const head = document.getElementsByTagName('head')[0];
-    const newScript = document.createElement('script');
-    newScript.id = id;
-    newScript.src = src;
-    if (opts.module) newScript.type = 'module';
-
-    head.appendChild(newScript);
-    newScript.addEventListener('load', _ => resolve(), { once: true });
-  });
-
 const changeColor = event => {
   const colorsStylesheet = document.createElement('style');
   document.getElementsByTagName('head')[0].appendChild(colorsStylesheet);
@@ -219,15 +207,7 @@ const initDownloadHandler = () => {
   };
 
   const downloadCanvas = async (canvas, w, ratio) => {
-    const HTML2C_SCRIPT_ID = 'html2canvas-script';
-    const isLoaded = document.getElementById(HTML2C_SCRIPT_ID) ? true : false;
-
-    if (!isLoaded) {
-      await loadScript(
-        `${window.location}public/js/html2canvas.min.js`,
-        HTML2C_SCRIPT_ID
-      );
-    }
+    await import('./html2canvas.min.js');
 
     html2canvas(canvas, {
       logging: false,

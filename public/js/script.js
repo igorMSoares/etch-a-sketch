@@ -1,31 +1,9 @@
 import isMobile from './is-mobile.js';
+import initKeydownEvent from './init-keydown.js';
 import { Brush } from './brush.js';
 
 const canvas = document.getElementById('canvas');
 const root = document.querySelector(':root');
-
-const changeColor = event => {
-  const colorsStylesheet = document.createElement('style');
-  document.getElementsByTagName('head')[0].appendChild(colorsStylesheet);
-
-  const pickedColor = event.target.getAttribute('color');
-  const hValue = event.target.style.getPropertyValue('--h-value');
-  const lValue = event.target.style.getPropertyValue('--l-value');
-
-  document.querySelector('.picked-color').classList.remove('picked-color');
-  event.target.classList.add('picked-color');
-
-  /** The current-color attrb is used to dynamically set pen color */
-  document
-    .getElementById('color-picker')
-    .setAttribute('current-color', pickedColor);
-
-  if (!colorsStylesheet.innerText.match(`bg-${pickedColor}`)) {
-    colorsStylesheet.append(
-      `.bg-${pickedColor} { background-color: hsl(${hValue}, 66%, ${lValue}) }`
-    );
-  }
-};
 
 const getState = elementId =>
   document.getElementById(elementId).getAttribute('state');
@@ -136,18 +114,6 @@ const initColorModeHandler = async mode => {
   };
 };
 
-const isSpacebarKey = event => [' ', 'spacebar'].includes(event.key);
-
-const initKeydownEvent = (element, handler = false) => {
-  element.addEventListener('keydown', event => {
-    if (isSpacebarKey(event)) {
-      event.preventDefault();
-      if (handler) handler(event);
-      else event.target.dispatchEvent(new Event('click'));
-    }
-  });
-};
-
 /** Handle changing selectors via keyboard (by pressing spacebar)
  * when navigating using tab key */
 const initColorModeKeydownHandler = () => {
@@ -158,13 +124,6 @@ const initColorModeKeydownHandler = () => {
       modeSelector.dispatchEvent(new Event('change'));
     })
   );
-};
-
-const initChangeColorHandler = () => {
-  document.querySelectorAll('.color').forEach(color => {
-    color.onclick = changeColor;
-    initKeydownEvent(color);
-  });
 };
 
 const initToggleInstructionsHandler = async () => {
@@ -331,6 +290,8 @@ const lazyRenderCanvas = (opts = {}) => {
         document.getElementById(LOADING.messageAreaId).appendChild(loadingMsg);
         const { renderCanvas } = await import('./render-canvas.js');
         renderCanvas(TOTAL_COLUMNS);
+        const { initChangeColorHandler } = await import('./color-picker.js');
+        initChangeColorHandler();
 
         thisObserver.unobserve(document.getElementById(OBSERVED_ELEMENT_ID));
 
@@ -353,7 +314,6 @@ const start = () => {
           Brush.state = Brush.isOn ? 'off' : 'on';
         });
       }
-      initChangeColorHandler();
       [
         'erase-mode',
         'random-color-mode',

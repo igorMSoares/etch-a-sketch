@@ -1,4 +1,5 @@
 import jsCssAnimations from './js-css-animations/js-css-animations.js';
+import initKeydownEvent from './init-keydown.js';
 
 const resetColorPicker = () => {
   document
@@ -86,8 +87,39 @@ const renderColorPicker = () => {
   resetColorPicker();
 };
 
+const changeColor = event => {
+  const colorsStylesheet = document.createElement('style');
+  document.getElementsByTagName('head')[0].appendChild(colorsStylesheet);
+
+  const pickedColor = event.target.getAttribute('color');
+  const hValue = event.target.style.getPropertyValue('--h-value');
+  const lValue = event.target.style.getPropertyValue('--l-value');
+
+  document.querySelector('.picked-color').classList.remove('picked-color');
+  event.target.classList.add('picked-color');
+
+  /** The current-color attrb is used to dynamically set pen color */
+  document
+    .getElementById('color-picker')
+    .setAttribute('current-color', pickedColor);
+
+  if (!colorsStylesheet.innerText.match(`bg-${pickedColor}`)) {
+    colorsStylesheet.append(
+      `.bg-${pickedColor} { background-color: hsl(${hValue}, 66%, ${lValue}) }`
+    );
+  }
+};
+
+const initChangeColorHandler = () => {
+  document.querySelectorAll('.color').forEach(color => {
+    color.onclick = changeColor;
+    initKeydownEvent(color);
+  });
+};
+
 export {
   renderColorPicker,
+  initChangeColorHandler,
   showColorPicker,
   hideColorPicker,
   resetColorPicker,

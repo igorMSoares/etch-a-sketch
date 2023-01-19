@@ -326,29 +326,40 @@ const initDownloadHandler = () => {
 
 const lazyRenderCanvas = (opts = {}) => {
   const {
-    totalColumns = 30,
-    thresholdElementsIds = ['reset-canvas', 'canvas'],
+    totalColumns: TOTAL_COLUMNS = 30,
+    loading: LOADING = {
+      className: 'loading-canvas',
+      message: 'Loading Canvas...',
+      messageAreaId: 'color-picker',
+    },
+    observedElementId: OBSERVED_ELEMENT_ID = 'reset-canvas',
     complete = false,
   } = opts;
-  const observer = new IntersectionObserver((entries, thisObserver) => {
-    entries.some(async entry => {
-      if (entry.isIntersecting) {
-        const { renderCanvas } = await import('./render-canvas.js');
-        renderCanvas(totalColumns);
 
-        thresholdElementsIds.forEach(id => {
-          thisObserver.unobserve(document.getElementById(id));
-        });
+  const loadingMsg = (() => {
+    /** Container must always be a <p>
+     * If changed to different element, must be changed in renderCanvas() too */
+    const p = document.createElement('p');
+    p.classList.add(LOADING.className);
+    p.innerHTML = LOADING.message;
+    return p;
+  })();
+
+  const observer = new IntersectionObserver(async (entries, thisObserver) => {
+    for (const entry of entries) {
+      if (entry.isIntersecting) {
+        document.getElementById(LOADING.messageAreaId).appendChild(loadingMsg);
+        const { renderCanvas } = await import('./render-canvas.js');
+        renderCanvas(TOTAL_COLUMNS);
+
+        thisObserver.unobserve(document.getElementById(OBSERVED_ELEMENT_ID));
 
         if (complete instanceof Function) complete();
-        return true; // stops some() iteration
       }
-    });
+    }
   });
 
-  thresholdElementsIds.forEach(id =>
-    observer.observe(document.getElementById(id))
-  );
+  observer.observe(document.getElementById(OBSERVED_ELEMENT_ID));
 };
 
 const start = () => {

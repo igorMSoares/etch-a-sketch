@@ -65,7 +65,7 @@ const loadCanvasCSS = (
 const renderCanvas = squaresPerRow => {
   loadCanvasCSS();
   canvas.innerHTML = '';
-  document.getElementById('color-picker').innerHTML === ''
+  document.querySelector('#color-picker p:only-child')
     ? renderColorPicker()
     : resetColorPicker();
 

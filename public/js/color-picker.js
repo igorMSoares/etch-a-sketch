@@ -42,6 +42,7 @@ const showColorPicker = () => {
 
 const renderColorPicker = () => {
   const colorPicker = document.getElementById('color-picker');
+  colorPicker.innerHTML = '';
   showColorPicker();
   let span;
   let hValue;

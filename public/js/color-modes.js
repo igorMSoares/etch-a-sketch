@@ -1,3 +1,5 @@
+import initKeydownEvent from './init-keydown.js';
+
 const findCornerClass = element =>
   [...element.classList].find(c => c.match(/top|bottom|right|left/));
 
@@ -73,4 +75,102 @@ const setGradientBg = event => {
   }
 };
 
-export { setColorBg, setRandomBg, setGradientBg, resetBg, findCornerClass };
+/** Handle changing selectors via keyboard (by pressing spacebar)
+ * when navigating using tab key */
+const initColorModeKeydownHandler = () => {
+  document.querySelectorAll('.color-mode-picker').forEach(cb =>
+    initKeydownEvent(cb, e => {
+      const modeSelector = e.target.previousElementSibling;
+      modeSelector.checked = !modeSelector.checked;
+      modeSelector.dispatchEvent(new Event('change'));
+    })
+  );
+};
+
+const getState = elementId =>
+  document.getElementById(elementId).getAttribute('state');
+
+const toggleState = (elementId, setStateHandler) => {
+  const toggle = {
+    visible: 'hidden',
+    hidden: 'visible',
+  };
+
+  setStateHandler(toggle[getState(elementId)]);
+};
+
+const initColorModeHandler = async mode => {
+  initColorModeKeydownHandler();
+  const modeSelector = document.querySelectorAll('.color-mode-selector');
+  modeSelector.forEach(selector => (selector.checked = false));
+
+  const { setRandomBg, setGradientBg, resetBg, setColorBg } = await import(
+    './color-modes.js'
+  );
+  const handler = {
+    'random-color-mode': setRandomBg,
+    'progressive-darkening-mode': setGradientBg,
+    'progressive-lighten-mode': setGradientBg,
+    'erase-mode': resetBg,
+    default: setColorBg,
+  };
+
+  document.getElementById(mode).onchange = async e => {
+    e.target.nextElementSibling.ariaChecked = e.target.checked;
+    if (e.target.id === 'toggle-grid') {
+      const { setGridState } = await import('./render-canvas.js');
+      toggleState('grid-state', setGridState);
+    } else {
+      const { hideColorPicker, showColorPicker } = await import(
+        './color-picker.js'
+      );
+      let eventHandler;
+      if (e.target.checked) {
+        modeSelector.forEach(cb => {
+          if (cb !== e.target && cb.id !== 'toggle-grid') {
+            cb.nextElementSibling.classList.add('disabled-cbox');
+            if (cb.id === 'erase-mode' && cb.checked) Brush.mode = 'brush';
+            cb.checked = false;
+            cb.nextElementSibling.ariaChecked = cb.checked;
+          }
+        });
+
+        mode === 'random-color-mode' || mode === 'erase-mode'
+          ? hideColorPicker()
+          : showColorPicker();
+
+        if (mode === 'erase-mode') Brush.mode = 'eraser';
+
+        eventHandler = handler[mode];
+      } else {
+        modeSelector.forEach(cb => {
+          if (cb.id !== 'toggle-grid') {
+            cb.nextElementSibling.classList.remove('disabled-cbox');
+          }
+        });
+
+        if (mode === 'random-color-mode' || mode === 'erase-mode')
+          showColorPicker();
+        if (mode === 'erase-mode') Brush.mode = 'brush';
+
+        eventHandler = handler.default;
+      }
+
+      const { Brush } = await import('./brush.js');
+      document.querySelectorAll('.pixel').forEach(square => {
+        square.onpointerenter = e => {
+          if (Brush.isOn) eventHandler(e);
+        };
+      });
+    }
+  };
+};
+
+export {
+  initColorModeHandler,
+  setColorBg,
+  setRandomBg,
+  setGradientBg,
+  resetBg,
+  findCornerClass,
+};

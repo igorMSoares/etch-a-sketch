@@ -40,7 +40,7 @@
       onload="this.onload=null;this.removeAttribute('media')"
       data-html2canvas-ignore
     />
-    <link
+    <!-- <link
       rel="preload"
       as="style"
       href="./public/js/js-css-animations/js-animations.css"
@@ -51,13 +51,12 @@
       media="print"
       onload="this.onload=null;this.removeAttribute('media')"
       data-html2canvas-ignore
-    />
+    /> -->
     <link
       rel="stylesheet"
       href="./public/css/style.css"
       data-html2canvas-ignore
     />
-    <!-- <link rel="preload" as="style" href="./public/css/canvas.css" /> -->
     <script src="./public/js/script.js" type="module"></script>
     <title>Etch-a-Sketch App</title>
   </head>
@@ -73,6 +72,7 @@
         <h2 class="instructions__header">
           <span id="instructions-h" class="toggable">Instructions </span>
           <img
+            style="display: none"
             width="16"
             height="16"
             class="toggle-instructions"

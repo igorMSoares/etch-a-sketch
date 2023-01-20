@@ -1,5 +1,4 @@
 import isMobile from './is-mobile.js';
-import initKeydownEvent from './init-keydown.js';
 
 const canvas = document.getElementById('canvas');
 const root = document.querySelector(':root');
@@ -33,28 +32,6 @@ const initResetCanvasHandlers = () => {
   document.getElementById('number-of-columns').onkeyup = e => {
     if (e.key === 'Enter') resetCanvas();
   };
-};
-
-const initToggleInstructionsHandler = async () => {
-  const { default: jsCssAnimations } = await import(
-    './js-css-animations/js-css-animations.js'
-  );
-  const toggler = document.querySelector('.toggle-instructions');
-  initKeydownEvent(toggler);
-
-  jsCssAnimations.init.fade({
-    trigger: '.toggle-instructions',
-    duration: 500,
-    staggerDelay: 150,
-    start: () => {
-      jsCssAnimations.toggle(toggler, 'rotateDown', 'rotateUp');
-    },
-    complete: () => {
-      document
-        .getElementById('instructions')
-        .classList.toggle('instructions-area__collapsed');
-    },
-  });
 };
 
 const lazyRenderCanvas = (opts = {}) => {
@@ -102,9 +79,13 @@ const start = () => {
     const { default: lazyDownloadCanvasHandler } = await import(
       './download-canvas.js'
     );
+    const { default: initToggleInstructionsHandler } = await import(
+      './toggle-instructions.js'
+    );
+    initToggleInstructionsHandler();
     lazyDownloadCanvasHandler();
   });
-  initToggleInstructionsHandler();
+  // initToggleInstructionsHandler();
 
   lazyRenderCanvas({
     complete: async () => {

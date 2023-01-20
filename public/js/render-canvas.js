@@ -4,6 +4,7 @@ import {
   renderGrid,
 } from './render-grid.js';
 import { renderColorPicker, resetColorPicker } from './color-picker.js';
+import loadCSS from './load-css.js';
 
 const root = document.querySelector(':root');
 const canvas = document.getElementById('canvas');
@@ -31,23 +32,6 @@ const setGridState = state => {
     () => root.style.setProperty('--square-border-w', '1px'),
     () => root.style.setProperty('--square-border-w', '0px')
   );
-};
-
-const preLoadCSS = href => {
-  const linkTag = document.createElement('link');
-  linkTag.rel = 'preload';
-  linkTag.as = 'style';
-  linkTag.href = href;
-  document.getElementsByTagName('head')[0].appendChild(linkTag);
-};
-
-const loadCSS = (href, id) => {
-  preLoadCSS(href);
-  const linkTag = document.createElement('link');
-  linkTag.id = id;
-  linkTag.rel = 'stylesheet';
-  linkTag.href = href;
-  document.getElementsByTagName('head')[0].appendChild(linkTag);
 };
 
 const loadCanvasCSS = (

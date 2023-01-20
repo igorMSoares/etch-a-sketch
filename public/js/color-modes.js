@@ -118,7 +118,7 @@ const initColorModeHandler = async mode => {
   document.getElementById(mode).onchange = async e => {
     e.target.nextElementSibling.ariaChecked = e.target.checked;
     if (e.target.id === 'toggle-grid') {
-      const { setGridState } = await import('./render-canvas.js');
+      const { setGridState } = await import('./canvas.js');
       toggleState('grid-state', setGridState);
     } else {
       const { hideColorPicker, showColorPicker } = await import(

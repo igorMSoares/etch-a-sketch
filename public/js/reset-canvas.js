@@ -2,7 +2,7 @@ import displayMessage from './message.js';
 import { showColorPicker } from './color-picker.js';
 import { Brush } from './brush.js';
 import isMobile from './is-mobile.js';
-import { renderCanvas } from './render-canvas.js';
+import { renderCanvas } from './canvas.js';
 
 export const resetCanvas = async () => {
   const inputField = document.getElementById('number-of-columns');

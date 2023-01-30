@@ -48,7 +48,7 @@ Hey, thanks a lot if you're enjoying using this etch-a-sketch web app! 🧡
 
 If you found some issues or have any suggestions on how to improve this, feel free to open an issue here on the repository or to colaborate through your pull requests.
 
-All feedbacks are mostly appreciated! 😊
+All feedbacks are much appreciated! 😊
 
 ## License
 

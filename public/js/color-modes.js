@@ -121,6 +121,7 @@ const initColorModeHandler = async mode => {
       const { setGridState } = await import('./canvas.js');
       toggleState('grid-state', setGridState);
     } else {
+      const { Brush } = await import('./brush.js');
       const { hideColorPicker, showColorPicker } = await import(
         './color-picker.js'
       );
@@ -156,7 +157,6 @@ const initColorModeHandler = async mode => {
         eventHandler = handler.default;
       }
 
-      const { Brush } = await import('./brush.js');
       document.querySelectorAll('.pixel').forEach(square => {
         square.onpointerenter = e => {
           if (Brush.isOn) eventHandler(e);

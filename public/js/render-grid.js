@@ -49,17 +49,23 @@ const validateAndSetSquareSize = (size, squaresPerRow) => {
   return totalColumns;
 };
 
-const addRoundCorner = (element, canvas) => {
+const addRoundCorner = (
+  element,
+  canvasDimensions,
+  canvasElementId = 'canvas'
+) => {
   const corner = {
     0: 'top-left',
-    [canvas.columns - 1]: 'top-right',
-    [canvas.columns * canvas.rows - 1]: 'bottom-right',
-    [canvas.columns * canvas.rows - canvas.columns]: 'bottom-left',
+    [canvasDimensions.columns - 1]: 'top-right',
+    [canvasDimensions.columns * canvasDimensions.rows - 1]: 'bottom-right',
+    [canvasDimensions.columns * canvasDimensions.rows -
+    canvasDimensions.columns]: 'bottom-left',
   };
+  const canvasElement = document.getElementById(canvasElementId);
 
-  document
-    .getElementById('canvas')
-    .setAttribute('corners', Object.keys(corner));
+  if (!canvasElement.hasAttribute('corners')) {
+    canvasElement.setAttribute('corners', Object.keys(corner));
+  }
 
   element.classList.add(`${corner[element.id]}`);
 };
@@ -84,8 +90,12 @@ const touchScreenHandler = event => {
   };
 };
 
-const renderGrid = async (squaresPerRow, totalRows, elementId = 'canvas') => {
-  const canvasElement = document.getElementById(elementId);
+const renderGrid = async (
+  squaresPerRow,
+  totalRows,
+  canvasElementId = 'canvas'
+) => {
+  const docFragment = document.createDocumentFragment();
 
   let div;
   for (let i = 0; i < squaresPerRow * totalRows; i++) {
@@ -109,8 +119,10 @@ const renderGrid = async (squaresPerRow, totalRows, elementId = 'canvas') => {
     if (isMobile()) {
       div.addEventListener('touchstart', touchScreenHandler);
     }
-    canvasElement.appendChild(div);
+    docFragment.appendChild(div);
   }
+
+  document.getElementById(canvasElementId).appendChild(docFragment);
 };
 
 export {
